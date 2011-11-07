@@ -9,6 +9,12 @@ content-page:
           components:
             - PageNav
         -
+          size: fixed
+          scrollable: false
+          type: row
+          components:
+            - PageHeader
+        -
           scrollable: false
           type: row
           regions:
