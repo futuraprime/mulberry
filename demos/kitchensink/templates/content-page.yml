@@ -5,24 +5,22 @@ content-page:
         -
           size: fixed
           scrollable: false
-          layout: row
+          type: row
           components:
             - PageNav
         -
           scrollable: false
-          layout: row
-          containerType: column
+          type: row
           regions:
             -
-              size: flex
-              layout: column
+              type: column
               className: body-box
               scrollable: true
               components:
                 - PageHeaderImage
                 - BodyText
             -
-              layout: column
+              type: column
               className: nav-box
               scrollable: true
               components:
