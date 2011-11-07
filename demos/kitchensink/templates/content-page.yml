@@ -1,0 +1,29 @@
+content-page:
+  screens:
+    - name: index
+      regions:
+        -
+          size: fixed
+          scrollable: false
+          layout: row
+          components:
+            - PageNav
+        -
+          scrollable: false
+          layout: row
+          containerType: column
+          regions:
+            -
+              size: flex
+              layout: column
+              className: body-box
+              scrollable: true
+              components:
+                - PageHeaderImage
+                - BodyText
+            -
+              layout: column
+              className: nav-box
+              scrollable: true
+              components:
+                - ChildNodes

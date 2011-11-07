@@ -1,0 +1,47 @@
+// custom contentpage css
+
+.region {
+	font-family: Georgia, serif;
+}
+.screen > .region:nth-child(1) {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+
+// body text styling
+.body-text {
+	padding: 0 20px;
+	color: #333;
+}
+.body-text {
+	h1, h2 {
+		font-family: "Didot", serif;
+	}
+	h1 {
+		border-bottom: 1px solid #aaa;
+			margin: 0 0 1em;
+	}
+}
+
+.body-box, .nav-box {
+	margin-top: 20px;
+}
+
+.size-flex.body-box {
+	-webkit-box-flex: 1;
+	max-width: 75%;
+}
+.size-flex.nav-box {
+	-webkit-box-flex: 0;
+	width: 25%;
+}
+
+.component.page-nav > .top, .tablet .component.more-drawer {
+	background-image: none;
+	box-shadow: none;
+	background-color: #ccc;
+}
+
+.tablet .component.page-nav > .top ul li.back, .tablet .component.page-nav > .top ul li.more, .tablet .component.more-drawer li.font-size {
+	border-right-color: #aaa;
+}
