@@ -43,7 +43,7 @@ module Mulberry
       # ahead of the imports & etc...
       File.open(File.join(themes_dir, theme_cssfile), 'a') do |f|
         pathstring = Pathname.new("#{font_newpath}").relative_path_from(Pathname.new(themes_dir))
-        f.write "@font-face {\n\tfont-family: '#{font_name}';\n\tsrc: url(#{pathstring}) format('truetype')\n\tfont-weight: normal;\n\tfont-style:normal;\n}\n"
+        f.write "@font-face {\n\tfont-family: '#{font_name}';\n\tsrc: url(#{pathstring}) format('truetype');\n\tfont-weight: normal;\n\tfont-style:normal;\n}\n"
       end
 
       puts "Added #{font_name} to the app."
