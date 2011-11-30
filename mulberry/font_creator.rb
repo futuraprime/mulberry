@@ -13,7 +13,7 @@ module Mulberry
     def initialize(code_type, destination_dir, fontpath)
       fonts_dir = File.join(destination_dir, 'assets', 'fonts')
       # make sure we don't fail due to an old scaffold
-      FileUtils.mkdir_p fonts_dir unless File.exists? template_dir
+      FileUtils.mkdir_p fonts_dir unless File.exists? fonts_dir
 
       # check what we're copying
       if !File.file? fontpath
@@ -27,19 +27,19 @@ module Mulberry
       # copy the font file over
       FileUtils.cp(fontpath, File.join(fonts_dir, font_fname))
       font_newpath = File.join(fonts_dir, font_fname)
-      
+
       # ok, now write some CSS to include it
       # get the theme file
       theme_cssfile = 'base.scss'
       themes_dir = File.join(destination_dir, 'themes', Mulberry::App.new(destination_dir).theme)
       FileUtils.mkdir_p themes_dir unless File.exists? themes_dir
-      
+
       # write the font import into the file
       File.open(File.join(themes_dir, theme_cssfile), 'a') do |f|
         pathstring = Pathname.new("#{font_newpath}").relative_path_from(Pathname.new(themes_dir))
         f.write "@font-face {\n\tfont-family: '#{font_name}';\n\tsrc: url(#{pathstring}) format('truetype')\n\tfont-weight: normal;\n\tfont-style:normal;\n}\n"
       end
-      
+
     end
   end
 end
