@@ -76,7 +76,7 @@ module Mulberry
       FileUtils.mkdir_p destination_dir
       report[:dir] = device_type
 
-      [ 'audios', 'images', 'videos', 'data' ].each do |asset_type|
+      [ 'audios', 'images', 'videos', 'data', 'fonts' ].each do |asset_type|
         src = File.join(@assets_dir, asset_type)
         if File.exists? src
           FileUtils.cp_r(src, destination_dir)

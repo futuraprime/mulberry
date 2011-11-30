@@ -169,6 +169,7 @@ module Mulberry
           'videos',
           'images',
           'feeds',
+          'fonts',
           'locations'
         ],
 
