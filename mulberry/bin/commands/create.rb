@@ -22,6 +22,10 @@ module Mulberry
 
           :datasource => {
             :creator  =>  Mulberry::CodeCreator
+          },
+          
+          :font       => {
+            :creator  =>  Mulberry::FontCreator
           }
         }
       end
