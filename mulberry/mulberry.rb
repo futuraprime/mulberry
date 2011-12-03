@@ -16,6 +16,7 @@ require 'mulberry/data'
 require 'mulberry/server'
 require 'mulberry/build_helper'
 require 'mulberry/code_creator'
+require 'mulberry/path_helper'
 require 'lib/builder'
 
 module Mulberry
