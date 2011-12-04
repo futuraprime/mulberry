@@ -28,7 +28,7 @@ module Mulberry
       'capability'        => 'javascript/capabilities'
     }
     
-    def self.get_root_dir( dir=Dir.pwd )
+    def self.get_root_dir( dir=nil )
       # returns the absolute path to the root directory of this mulberry app
       # returns false if this is not a mulberry app
       
@@ -36,7 +36,10 @@ module Mulberry
       # mulberry-like directory structure
       
       # get the current dir
-      dir = File.expand_path( dir ) # File.expand_path( File.dirname(__FILE__) )
+      # this may get passed 'nil' occasionally, so we make sure we
+      # have a directory first
+      dir ||=Dir.pwd
+      dir = File.expand_path( dir )
       
       # when we're at the root, these will be equal
       # TODO: make sure this check works on Windows as well as UNIX

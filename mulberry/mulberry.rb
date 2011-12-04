@@ -153,6 +153,8 @@ module Mulberry
     end
 
     def self.scaffold(app_name, silent = false)
+      # this is too late to raise the error
+      # see mulberry/bin/commands/scaffold.rb
       raise "You must provide an app name" unless app_name
 
       mulberry_base = File.dirname(__FILE__)

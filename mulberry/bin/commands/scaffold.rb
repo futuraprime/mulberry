@@ -5,9 +5,10 @@ module Mulberry
     class Scaffold
       def initialize(args = [])
         dir = args[0]
-
-        if dir.nil? || Mulberry.dir_is_app?(dir)
-          @dir = Mulberry.get_app_dir dir
+        
+        begin
+        #if dir.nil? || Mulberry.dir_is_app?(dir)
+          @dir = Mulberry::PathHelper.get_root_dir dir
           @created_pages = false
 
           sitemap = YAML.load_file(File.join(@dir, Mulberry::SITEMAP))
@@ -16,7 +17,10 @@ module Mulberry
           if !@created_pages
             puts "All pages in the sitemap already exist"
           end
-        else
+        rescue PathError => e
+          # A PathError means we're not in a mulberry directory --
+          # not a problem, we're meant to create one!
+          raise "You must provide an app name" unless dir
           dir = dir.gsub(File.join(Dir.pwd, ""), "")
           Mulberry::App.scaffold(dir)
         end
