@@ -19,7 +19,7 @@ module Mulberry
 
       templates_dir = File.join(Mulberry::Directories.templates, 'content')
       extension = EXTENSIONS[content_type.to_sym] || 'yml'
-      dest = Mulberry::PathHelper(DESTINATIONS[content_type.to_sym], "#{filename}.#{extension}") #File.join(destination_dir, DESTINATIONS[content_type.to_sym], "#{filename}.#{extension}")
+      dest = Mulberry::PathHelper(DESTINATIONS[content_type.to_sym], "#{filename}.#{extension}")
 
       FileUtils.cp_r(
         File.join(templates_dir, "#{content_type}.yml"),
