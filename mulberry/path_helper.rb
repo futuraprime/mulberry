@@ -11,6 +11,9 @@ end
 
 module Mulberry
   class PathHelper
+    def initialize
+      
+    end
     
     # the definition of a mulberry directory
     # a directory returns true as the mulberry root directory if it contains
@@ -86,8 +89,26 @@ module Mulberry
     
     # generates a relative path from one file to another
     # (sugar so we don't have to use Pathname)
-    def self.relative_path(from, to, separator)
+    
+    # approach lightly modified from http://www.justskins.com/forums/file-relative-path-handling-97116.html
+    def self.relative_path(to, from, end_sep=File::SEPARATOR)
+      # get absolute paths, then break them into arrays
+      to_a      = File.expand_path(to).split(File::SEPARATOR)
+      from_a    = File.expand_path(from).split(File::SEPARATOR)
       
+      # iterate from the front until they diverge
+      # or we run out
+      while to_a.first == from_a.first
+        to_a.shift
+        from_a.shift
+      end
+      
+      # if this is a directory, we'll have to path down one more level
+      # than if it's a file
+      dirfix = File.directory?(from) ? 0 : 1
+      
+      # now we put everything together
+      ('..' + end_sep) * (from_a.length - dirfix) + to_a.join(end_sep)
     end
     
     
