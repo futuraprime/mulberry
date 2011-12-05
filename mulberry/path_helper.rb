@@ -28,7 +28,8 @@ module Mulberry
     # the directory standard isn't a forward slash
     DIRECTORIES = {
       'component'         => 'javascript/components',
-      'capability'        => 'javascript/capabilities'
+      'capability'        => 'javascript/capabilities',
+      'themes'            => 'themes'
     }
     
     def self.get_app_dir( dir=nil )
@@ -73,7 +74,7 @@ module Mulberry
       dir = self.get_app_dir( dir )
       
       # active theme is handled separately
-      return get_active_theme_dir() if (target == 'active_theme')
+      return get_active_theme_dir dir if (target == 'active_theme')
       
       # see if it's a special directory otherwise
       target = DIRECTORIES[target] if DIRECTORIES.has_key?(target)
@@ -115,7 +116,7 @@ module Mulberry
     private
     
     # gets the directory of the active theme
-    def get_active_theme_dir( dir=Dir.pwd )
+    def self.get_active_theme_dir( dir=Dir.pwd )
       dir = self.get_app_dir( dir )
       File.join( DIRECTORIES['themes'], Mulberry::App.new(dir).theme)
     end
