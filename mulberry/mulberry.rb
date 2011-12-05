@@ -191,8 +191,8 @@ module Mulberry
         subdirs.each { |d| FileUtils.mkdir File.join(dir, d) }
       end
 
-      Mulberry::CodeCreator.new('base', base, 'base')
-      Mulberry::CodeCreator.new('routes', base, 'routes')
+      Mulberry::CodeCreator.new('base', 'base')
+      Mulberry::CodeCreator.new('routes', 'routes')
 
       asset_dirs = Dir.entries File.join(base, 'assets')
 

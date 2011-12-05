@@ -12,7 +12,7 @@ describe Mulberry::TemplateCreator do
   end
 
   it "should create a template with the requested name" do
-    Mulberry::TemplateCreator.new('template', @tmpdir, 'foo')
+    Mulberry::TemplateCreator.new('template', 'foo')
 
     template_dir = File.join @tmpdir, @template_dir
 
@@ -23,7 +23,7 @@ describe Mulberry::TemplateCreator do
   it "should create a template" do
     tpl = 'foo'
 
-    Mulberry::TemplateCreator.new('template', @tmpdir, tpl)
+    Mulberry::TemplateCreator.new('template', tpl)
 
     template_file = File.join(@tmpdir, @template_dir, "#{tpl}.yml")
     template = YAML.load_file(template_file)[tpl]

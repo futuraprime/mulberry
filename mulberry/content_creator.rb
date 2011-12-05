@@ -12,14 +12,14 @@ module Mulberry
       :page       => 'md'
     }
 
-    def initialize(content_type, destination_dir, filename)
+    def initialize(content_type, filename)
       if !DESTINATIONS.keys.include? content_type.to_sym
         raise "Unknown content type #{content_type}"
       end
 
       templates_dir = File.join(Mulberry::Directories.templates, 'content')
       extension = EXTENSIONS[content_type.to_sym] || 'yml'
-      dest = Mulberry::PathHelper(DESTINATIONS[content_type.to_sym], "#{filename}.#{extension}")
+      dest = Mulberry::PathHelper.get_dir(File.join(DESTINATIONS[content_type.to_sym], "#{filename}.#{extension}"))
 
       FileUtils.cp_r(
         File.join(templates_dir, "#{content_type}.yml"),

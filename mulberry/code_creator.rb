@@ -11,7 +11,7 @@ module Mulberry
       'route'       =>  '.'
     }
 
-    def initialize(code_type, destination_dir, filename)
+    def initialize(code_type, filename)
       raise "Don't know how to create code type #{code_type}" unless DIRNAMES[code_type]
 
       @code_type            = code_type

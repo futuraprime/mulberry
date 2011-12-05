@@ -5,7 +5,7 @@ module Mulberry
     class Scaffold
       def initialize(args = [])
         dir = args[0]
-        
+
         begin
         #if dir.nil? || Mulberry.dir_is_app?(dir)
           @dir = Mulberry::PathHelper.get_app_dir dir
@@ -38,7 +38,7 @@ module Mulberry
 
       def create_page(page_name)
         unless page_exists(page_name)
-          page = Mulberry::ContentCreator.new(:page, @dir, page_name)
+          page = Mulberry::ContentCreator.new(:page, page_name)
           @created_pages = true
         end
       end

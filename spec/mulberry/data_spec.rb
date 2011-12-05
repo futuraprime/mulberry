@@ -40,7 +40,7 @@ describe Mulberry::Data do
     end
 
     @pages.each do |page|
-      Mulberry::ContentCreator.new('page', @source_dir, page)
+      Mulberry::ContentCreator.new('page', page)
     end
 
     [

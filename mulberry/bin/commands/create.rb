@@ -43,7 +43,7 @@ module Mulberry
         raise "Don't know how to create #{content_type}. Valid types:\n" << commands.collect{ |cmd| "#{cmd[0]}" }.sort.join("\n") unless commands[content_type]
         command = commands[content_type]
 
-        filenames.each { |f| (command[:creator] || default_creator).new(content_type.to_s, dir, f) }
+        filenames.each { |f| (command[:creator] || default_creator).new(content_type.to_s, f) }
       end
     end
   end

@@ -13,20 +13,20 @@ describe Mulberry::CodeCreator do
 
   it "should raise an error if trying to create a file that already exists" do
     lambda {
-      Mulberry::CodeCreator.new('component', @source_dir, 'fake')
-      Mulberry::CodeCreator.new('component', @source_dir, 'fake')
+      Mulberry::CodeCreator.new('component', 'fake')
+      Mulberry::CodeCreator.new('component', 'fake')
     }.should raise_error
   end
 
   it "should raise an error if asked to create an unknown code type" do
     lambda {
-      Mulberry::CodeCreator.new('unknown', @source_dir, 'fake')
+      Mulberry::CodeCreator.new('unknown', 'fake')
     }.should raise_error
   end
 
   describe "component creation" do
     before :each do
-      Mulberry::CodeCreator.new('component', @source_dir, 'FooBarBaz')
+      Mulberry::CodeCreator.new('component', 'FooBarBaz')
     end
 
     it "should create the component file" do
@@ -86,7 +86,7 @@ describe Mulberry::CodeCreator do
 
   describe "capability creation" do
     before :each do
-      Mulberry::CodeCreator.new('capability', @source_dir, 'BizBopBim')
+      Mulberry::CodeCreator.new('capability', 'BizBopBim')
     end
 
     it "should create the capability file" do
@@ -103,7 +103,7 @@ describe Mulberry::CodeCreator do
 
   describe "route creation" do
     before :each do
-      Mulberry::CodeCreator.new('route', @source_dir, '/foo/:bar')
+      Mulberry::CodeCreator.new('route', '/foo/:bar')
       @routes = File.join(@source_dir, 'javascript', 'routes.js')
     end
 
