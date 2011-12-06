@@ -5,7 +5,7 @@ module Mulberry
     DIRNAMES = {
       'component'   =>  'components',
       'capability'  =>  'capabilities',
-      'datasource'  =>  'data',
+      'store'       =>  'stores',
       'base'        =>  '.',
       'routes'      =>  '.',
       'route'       =>  '.'
