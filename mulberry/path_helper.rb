@@ -11,10 +11,9 @@ end
 
 module Mulberry
   class PathHelper
-    def initialize
-      
-    end
-    
+    # we'll cache the path in a class variable
+    @@app_dir = nil
+
     # the definition of a mulberry directory
     # a directory returns true as the mulberry root directory if it contains
     # these files and directories
@@ -22,7 +21,7 @@ module Mulberry
       'config.yml',
       'sitemap.yml'
     ]
-    
+
     # shortcuts for important directories
     # these use standard slashes--they get corrected later in cases where
     # the directory standard isn't a forward slash
@@ -31,34 +30,7 @@ module Mulberry
       'capability'        => 'javascript/capabilities',
       'themes'            => 'themes'
     }
-    
-    def self.get_app_dir( dir=nil )
-      # returns the absolute path to the root directory of this mulberry app
-      # returns false if this is not a mulberry app
-      
-      # we're going to detect the root directory by the presence of a
-      # mulberry-like directory structure
-      
-      # get the current dir
-      # this may get passed 'nil' occasionally, so we make sure we
-      # have a directory first
-      dir ||=Dir.pwd
-      dir = File.expand_path( dir )
-      
-      # when we're at the root, these will be equal
-      # TODO: make sure this check works on Windows as well as UNIX
-      until File.split(dir)[0] == File.split(dir)[1]
-        # we found it
-        return dir if is_root?(dir)
-        # otherwise, keep iterating
-        dir = File.split(dir)[0]
-      end
-      
-      # we reached the end of the directory structure & didn't find it, so give up
-      raise PathError, "You must run this command from inside a valid Mulberry app."
-    end
-    
-    
+
     # checks if a directory is the mulberry root directory
     # we'll content ourselves with looking for config.yml and sitemap.yml
     def self.is_root?(dir)
@@ -67,18 +39,32 @@ module Mulberry
         return false unless File.exists?(check)
       end
     end
-    
-    
+
+
+    # gets the app directory, falling back on the one already cached or set if
+    def self.get_app_dir( dir=nil )
+      return @@app_dir if @@app_dir
+      @@app_dir = self._get_app_dir( dir )
+    end
+
+
+    # set_app_dir lets us override the class' good sense and tell it where
+    # the app directory is. this is basically so we can run tests
+    def self.set_app_dir( app_dir )
+      @@app_dir = app_dir
+    end
+
+
     # gets the absolute path to a particular directory in this mulberry app
     def self.get_dir( target, dir=Dir.pwd )
       dir = self.get_app_dir( dir )
-      
+
       # active theme is handled separately
       return get_active_theme_dir dir if (target == 'active_theme')
-      
+
       # see if it's a special directory otherwise
       target = DIRECTORIES[target] if DIRECTORIES.has_key?(target)
-      
+
       # return the joined directory path
       # note: we split target on '/' first, so that we can program in forward
       # slash and have File.join convert them for other directory systems later
@@ -86,39 +72,65 @@ module Mulberry
       # for Windows
       File.join(dir, target.split('/'))
     end
-    
-    
+
+
     # generates a relative path from one file to another
     # (sugar so we don't have to use Pathname)
-    
+
     # approach lightly modified from http://www.justskins.com/forums/file-relative-path-handling-97116.html
     def self.relative_path(to, from, end_sep=File::SEPARATOR)
       # get absolute paths, then break them into arrays
       to_a      = File.expand_path(to).split(File::SEPARATOR)
       from_a    = File.expand_path(from).split(File::SEPARATOR)
-      
+
       # iterate from the front until they diverge
       # or we run out
       while to_a.first == from_a.first
         to_a.shift
         from_a.shift
       end
-      
+
       # if this is a directory, we'll have to path down one more level
       # than if it's a file
       dirfix = File.directory?(from) ? 0 : 1
-      
+
       # now we put everything together
       ('..' + end_sep) * (from_a.length - dirfix) + to_a.join(end_sep)
     end
-    
-    
+
+
     private
-    
+
+    # returns the absolute path to the root directory of this mulberry app
+    # returns false if this is not a mulberry app
+    def self._get_app_dir( dir=nil )
+      # we're going to detect the root directory by the presence of a
+      # mulberry-like directory structure
+
+      # get the current dir
+      # this may get passed 'nil' occasionally, so we make sure we
+      # have a directory first
+      dir ||=Dir.pwd
+      dir = File.expand_path( dir )
+
+      # when we're at the root, these will be equal
+      # TODO: make sure this check works on Windows as well as UNIX
+      until File.split(dir)[0] == File.split(dir)[1]
+        # we found it
+        return dir if is_root?(dir)
+        # otherwise, keep iterating
+        dir = File.split(dir)[0]
+      end
+
+      # we reached the end of the directory structure & didn't find it, so give up
+      raise PathError, "You must run this command from inside a valid Mulberry app."
+    end
+
+
     # gets the directory of the active theme
     def self.get_active_theme_dir( dir=Dir.pwd )
       dir = self.get_app_dir( dir )
-      File.join( DIRECTORIES['themes'], Mulberry::App.new(dir).theme)
+      File.join( dir, DIRECTORIES['themes'], Mulberry::App.new(dir).theme)
     end
   end
 end

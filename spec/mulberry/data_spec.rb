@@ -6,6 +6,8 @@ describe Mulberry::Data do
     @source_dir = 'testapp'
 
     Mulberry::App.scaffold(@source_dir, true)
+    # set the path directory
+    Mulberry::PathHelper.set_app_dir(@source_dir)
 
     sitemap = [
       {

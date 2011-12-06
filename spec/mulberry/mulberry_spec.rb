@@ -2,8 +2,11 @@ require 'spec_helper'
 
 describe Mulberry::App do
   before :each do
-    Mulberry::App.scaffold('testapp', true)
-    @app = Mulberry::App.new 'testapp'
+    @source_dir = 'testapp'
+
+    Mulberry::App.scaffold(@source_dir, true)
+    Mulberry::PathHelper.set_app_dir(@source_dir)
+    @app = Mulberry::App.new @source_dir
   end
 
   after :each do
@@ -42,7 +45,7 @@ describe Mulberry::App do
 
     it "should raise an error if the directory already exists" do
       lambda {
-        Mulberry::App.scaffold('testapp', true)
+        Mulberry::App.scaffold(@source_dir, true)
       }.should raise_error
     end
 
