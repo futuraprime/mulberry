@@ -5,46 +5,24 @@ module Mulberry
     class Scaffold
       def initialize(args = [])
         dir = args[0]
-        
+
+
         begin
-        #if dir.nil? || Mulberry.dir_is_app?(dir)
-          @dir = Mulberry::PathHelper.get_app_dir dir
-          @created_pages = false
+          # check if we're in a directory
+          Mulberry::PathHelper.get_app_dir dir
 
-          sitemap = YAML.load_file(File.join(@dir, Mulberry::SITEMAP))
-          sitemap.each { |page| process_page page }
+          # if we hit a directory, we shouldn't scaffold
+          raise "You cannot scaffold an app inside another app"
 
-          if !@created_pages
-            puts "All pages in the sitemap already exist"
-          end
-        rescue PathError => e
-          # A PathError means we're not in a mulberry directory --
-          # not a problem, we're meant to create one!
-          raise "You must provide an app name" unless dir
+        rescue PathError > e
+          # only proceed if we *don't* hit a PathError
+          # that is, we shouldn't be able to scaffold an app if we're
+          # already in one
+          raise "You must specify an app name" unless dir
+
           dir = dir.gsub(File.join(Dir.pwd, ""), "")
           Mulberry::App.scaffold(dir)
         end
-      end
-
-      private
-      def process_page(page)
-        if page.is_a? Hash
-          page.values.first.each { |child| process_page child }
-          create_page page.keys.first
-        else
-          create_page page
-        end
-      end
-
-      def create_page(page_name)
-        unless page_exists(page_name)
-          page = Mulberry::ContentCreator.new(:page, @dir, page_name)
-          @created_pages = true
-        end
-      end
-
-      def page_exists(page_name)
-        File.exists?(File.join(@dir, 'pages', "#{page_name}.md"))
       end
     end
   end
