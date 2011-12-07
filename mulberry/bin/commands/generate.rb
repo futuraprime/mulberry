@@ -6,7 +6,7 @@ module Mulberry
       def initialize(args = [])
         dir = args[0]
 
-        @dir = Mulberry::PathHandler.get_app_dir dir
+        @dir = Mulberry::PathHelper.get_app_dir dir
         @created_pages = false
 
         sitemap = YAML.load_file(File.join(@dir, Mulberry::SITEMAP))

@@ -14,7 +14,7 @@ module Mulberry
           # if we hit a directory, we shouldn't scaffold
           raise "You cannot scaffold an app inside another app"
 
-        rescue PathError > e
+        rescue PathError
           # only proceed if we *don't* hit a PathError
           # that is, we shouldn't be able to scaffold an app if we're
           # already in one
