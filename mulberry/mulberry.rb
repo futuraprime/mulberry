@@ -175,9 +175,6 @@ module Mulberry
 
       FileUtils.mkdir_p base
 
-      # set the new path
-      Mulberry.paths.set_app_dir(base)
-
       dirs = {
         :assets => [
           'data',

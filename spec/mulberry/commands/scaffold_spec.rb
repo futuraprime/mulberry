@@ -14,7 +14,7 @@ describe Mulberry::Command::Create do
 
     after :each do
       FileUtils.rm_rf @app_name
-      Mulberry.paths.clear_app_dir
+      Mulberry::PathHelper.clear_app_dir
     end
 
     it "should initalize" do

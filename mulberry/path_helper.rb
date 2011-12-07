@@ -12,6 +12,9 @@ end
 module Mulberry
   class PathHelper
 
+    # class variable to hold the app dir
+    @@app_dir = nil
+
     # the definition of a mulberry directory
     # a directory returns true as the mulberry root directory if it contains
     # these files and directories
@@ -31,7 +34,7 @@ module Mulberry
 
     # checks if a directory is the mulberry root directory
     # we'll content ourselves with looking for config.yml and sitemap.yml
-    def is_root?(dir)
+    def self.is_root?(dir)
       ROOTFILES.each do |file|
         check = File.join(dir, file)
         return false unless File.exists?(check)
@@ -40,28 +43,28 @@ module Mulberry
 
 
     # gets the app directory, falling back on the one already cached or set if
-    def get_app_dir( dir=nil )
-      return @app_dir if @app_dir
-      @app_dir = _get_app_dir( dir )
+    def self.get_app_dir( dir=nil )
+      return @@app_dir if @@app_dir
+      @@app_dir = _get_app_dir( dir )
     end
 
 
     # set_app_dir lets us override the class' good sense and tell it where
     # the app directory is. this is basically so we can run tests
-    def set_app_dir( app_dir )
-      @app_dir = app_dir
+    def self.set_app_dir( app_dir )
+      @@app_dir = app_dir
     end
 
 
     # clear_app_dir lets us blank path helper's memory
     # also fol tests
-    def clear_app_dir
-      @app_dir = nil
+    def self.clear_app_dir
+      @@app_dir = nil
     end
 
 
     # gets the absolute path to a particular directory in this mulberry app
-    def get_dir( target, dir=Dir.pwd )
+    def self.get_dir( target, dir=Dir.pwd )
       dir = self.get_app_dir( dir )
 
       # active theme is handled separately
@@ -108,7 +111,7 @@ module Mulberry
 
     # returns the absolute path to the root directory of this mulberry app
     # returns false if this is not a mulberry app
-    def _get_app_dir( dir=nil )
+    def self._get_app_dir( dir=nil )
       # we're going to detect the root directory by the presence of a
       # mulberry-like directory structure
 
@@ -116,7 +119,9 @@ module Mulberry
       # this may get passed 'nil' occasionally, so we make sure we
       # have a directory first
       dir ||=Dir.pwd
+      puts "Looking at #{dir}"
       dir = File.expand_path( dir )
+      puts "Expanded to #{dir}"
 
       # when we're at the root, these will be equal
       # TODO: make sure this check works on Windows as well as UNIX

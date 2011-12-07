@@ -12,7 +12,7 @@ module Mulberry
           end
         end.parse!
 
-        dir = Mulberry.paths.get_app_dir args[0]
+        dir = Mulberry::PathHelper.get_app_dir args[0]
         app = Mulberry::App.new(dir)
         app.device_build( options.merge({:test => true}) )
       end
