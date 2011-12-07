@@ -46,16 +46,24 @@ module Mulberry
     VERSION
   end
 
-  def self.get_app_dir(dir = nil)
-    dir ||= Dir.pwd
-    raise "You must run this command from inside a valid Mulberry app." unless dir_is_app?(dir)
-    dir
+  # def self.get_app_dir(dir = nil)
+  #   dir ||= Dir.pwd
+  #   raise "You must run this command from inside a valid Mulberry app." unless dir_is_app?(dir)
+  #   dir
+  # end
+  #
+  # def self.dir_is_app?(dir)
+  #   dir ||= ''
+  #   File.exists?(dir) && File.exists?(File.join(dir, 'config.yml'))
+  # end
+
+
+  # set up an instance of the path helper
+  @paths = Mulberry::PathHelper.new
+  def self.paths
+    return @paths
   end
 
-  def self.dir_is_app?(dir)
-    dir ||= ''
-    File.exists?(dir) && File.exists?(File.join(dir, 'config.yml'))
-  end
 
   class Env
     def self.host_os
@@ -166,6 +174,9 @@ module Mulberry
       end
 
       FileUtils.mkdir_p base
+
+      # set the new path
+      Mulberry.paths.set_app_dir(base)
 
       dirs = {
         :assets => [

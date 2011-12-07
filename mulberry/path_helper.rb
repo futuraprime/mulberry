@@ -11,8 +11,6 @@ end
 
 module Mulberry
   class PathHelper
-    # we'll cache the path in a class variable
-    @@app_dir = nil
 
     # the definition of a mulberry directory
     # a directory returns true as the mulberry root directory if it contains
@@ -33,7 +31,7 @@ module Mulberry
 
     # checks if a directory is the mulberry root directory
     # we'll content ourselves with looking for config.yml and sitemap.yml
-    def self.is_root?(dir)
+    def is_root?(dir)
       ROOTFILES.each do |file|
         check = File.join(dir, file)
         return false unless File.exists?(check)
@@ -42,21 +40,21 @@ module Mulberry
 
 
     # gets the app directory, falling back on the one already cached or set if
-    def self.get_app_dir( dir=nil )
-      return @@app_dir if @@app_dir
-      @@app_dir = self._get_app_dir( dir )
+    def get_app_dir( dir=nil )
+      return @app_dir if @app_dir
+      @app_dir = _get_app_dir( dir )
     end
 
 
     # set_app_dir lets us override the class' good sense and tell it where
     # the app directory is. this is basically so we can run tests
-    def self.set_app_dir( app_dir )
-      @@app_dir = app_dir
+    def set_app_dir( app_dir )
+      @app_dir = app_dir
     end
 
 
     # gets the absolute path to a particular directory in this mulberry app
-    def self.get_dir( target, dir=Dir.pwd )
+    def get_dir( target, dir=Dir.pwd )
       dir = self.get_app_dir( dir )
 
       # active theme is handled separately
@@ -103,7 +101,7 @@ module Mulberry
 
     # returns the absolute path to the root directory of this mulberry app
     # returns false if this is not a mulberry app
-    def self._get_app_dir( dir=nil )
+    def _get_app_dir( dir=nil )
       # we're going to detect the root directory by the presence of a
       # mulberry-like directory structure
 
@@ -128,7 +126,7 @@ module Mulberry
 
 
     # gets the directory of the active theme
-    def self.get_active_theme_dir( dir=Dir.pwd )
+    def get_active_theme_dir( dir=Dir.pwd )
       dir = self.get_app_dir( dir )
       File.join( dir, DIRECTORIES['themes'], Mulberry::App.new(dir).theme)
     end

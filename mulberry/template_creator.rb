@@ -1,7 +1,7 @@
 module Mulberry
   class TemplateCreator
     def initialize(code_type, filename)
-      template_dir = Mulberry::PathHelper.get_dir('templates')
+      template_dir = Mulberry.paths.get_dir('templates')
       FileUtils.mkdir_p template_dir unless File.exists? template_dir
       template_filename = File.join(template_dir, "#{filename}.yml")
 

@@ -6,7 +6,7 @@ describe Mulberry::CodeCreator do
     @source_dir = 'testapp'
     Mulberry::App.scaffold(@source_dir, true)
     # now have to set the path here
-    Mulberry::PathHelper.set_app_dir(@source_dir)
+    Mulberry.paths.set_app_dir(@source_dir)
   end
 
   after :each do
