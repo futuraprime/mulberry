@@ -28,7 +28,7 @@ module Mulberry
       'capability'        => 'javascript/capabilities'
     }
 
-    def self.get_app_dir( dir=nil )
+    def self.get_app_dir(dir=nil)
       # returns the absolute path to the root directory of this mulberry app
       # returns false if this is not a mulberry app
 
@@ -38,8 +38,8 @@ module Mulberry
       # get the current dir
       # this may get passed 'nil' occasionally, so we make sure we
       # have a directory first
-      dir ||=Dir.pwd
-      dir = File.expand_path( dir )
+      dir ||= Dir.pwd
+      dir = File.expand_path(dir)
 
       # when we're at the root, these will be equal
       # TODO: make sure this check works on Windows as well as UNIX
@@ -66,8 +66,8 @@ module Mulberry
 
 
     # gets the absolute path to a particular directory in this mulberry app
-    def self.get_dir( target, dir=Dir.pwd )
-      dir = self.get_app_dir( dir )
+    def self.get_dir(target, dir=Dir.pwd)
+      dir = self.get_app_dir(dir)
 
       # active theme is handled separately
       return get_active_theme_dir() if (target == 'active_theme')
