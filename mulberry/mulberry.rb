@@ -46,17 +46,6 @@ module Mulberry
     VERSION
   end
 
-  def self.get_app_dir(dir = nil)
-    dir ||= Dir.pwd
-    raise "You must run this command from inside a valid Mulberry app." unless dir_is_app?(dir)
-    dir
-  end
-
-  def self.dir_is_app?(dir)
-    dir ||= ''
-    File.exists?(dir) && File.exists?(File.join(dir, 'config.yml'))
-  end
-
   class Env
     def self.host_os
       case Config::CONFIG['host_os']
@@ -153,9 +142,6 @@ module Mulberry
     end
 
     def self.scaffold(app_name, silent = false)
-      # this is too late to raise the error
-      # see mulberry/bin/commands/scaffold.rb
-      raise "You must provide an app name" unless app_name
 
       mulberry_base = File.dirname(__FILE__)
 
