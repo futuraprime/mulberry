@@ -4,7 +4,7 @@ require 'mulberry/code_creator'
 module Mulberry
   class TemplateCreator
     def initialize(code_type, destination_dir, filename)
-      template_dir = File.join(destination_dir, 'templates')
+      template_dir = Mulberry::PathHelper('templates', destination_dir)
       capability_name = "Page#{filename.gsub('-', '_').camelize}"
       FileUtils.mkdir_p template_dir unless File.exists? template_dir
       template_filename = File.join(template_dir, "#{filename}.yml")

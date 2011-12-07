@@ -21,11 +21,13 @@ module Mulberry
     ]
 
     # shortcuts for important directories
-    # these use standard slashes--they get corrected later in cases where
-    # the directory standard isn't a forward slash
     DIRECTORIES = {
-      'component'         => 'javascript/components',
-      'capability'        => 'javascript/capabilities'
+      'component'         => File.join('javascript', 'components'),
+      'capability'        => File.join('javascript', 'capabilities'),
+      'store'             => File.join('javascript', 'stores'),
+      'base'              => 'javascript',
+      'routes'            => 'javascript',
+      'route'             => 'javascript'
     }
 
     def self.get_app_dir(dir=nil)

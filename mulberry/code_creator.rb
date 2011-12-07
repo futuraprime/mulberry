@@ -19,8 +19,8 @@ module Mulberry
       @destination_dir      = destination_dir
       @code_type            = code_type
       @filename             = filename
-      @js_dir               = File.join(@destination_dir, 'javascript')
-      @code_dir             = File.join(@js_dir, DIRNAMES[@code_type])
+      @js_dir               = Mulberry::PathHelper.get_dir('javascript', @destination_dir)
+      @code_dir             = Mulberry::PathHelper.get_dir(DIRNAMES[@code_type], @destination_dir)
       @code_templates_dir   = File.join(Mulberry::Directories.templates, 'code')
 
       template = File.read(File.join(@code_templates_dir, "#{@code_type}.js"))
@@ -95,7 +95,7 @@ module Mulberry
       end
 
       # add the import statement to the theme css file
-      themes_dir = File.join(@destination_dir, 'themes', Mulberry::App.new(@destination_dir).theme)
+      themes_dir = Mulberry::PathHelper.get_dir('active_theme', @destination_dir)
 
       FileUtils.mkdir_p themes_dir unless File.exists? themes_dir
 
