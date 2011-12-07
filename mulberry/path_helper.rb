@@ -53,6 +53,13 @@ module Mulberry
     end
 
 
+    # clear_app_dir lets us blank path helper's memory
+    # also fol tests
+    def clear_app_dir
+      @app_dir = nil
+    end
+
+
     # gets the absolute path to a particular directory in this mulberry app
     def get_dir( target, dir=Dir.pwd )
       dir = self.get_app_dir( dir )

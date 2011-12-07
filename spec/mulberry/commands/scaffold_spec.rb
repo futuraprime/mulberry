@@ -1,7 +1,8 @@
 require 'mulberry/commands/spec_helper.rb'
+require 'mulberry/bin/commands/scaffold'
 
 describe Mulberry::Command::Create do
-  include Mulberry::Command::SpecHelpers
+  #include Mulberry::Command::SpecHelpers
 
   describe '#initialize' do
     before :each do
@@ -13,6 +14,7 @@ describe Mulberry::Command::Create do
 
     after :each do
       FileUtils.rm_rf @app_name
+      Mulberry.paths.clear_app_dir
     end
 
     it "should initalize" do
