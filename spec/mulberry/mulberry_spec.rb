@@ -5,12 +5,12 @@ describe Mulberry::App do
     @source_dir = 'testapp'
 
     Mulberry::App.scaffold(@source_dir, true)
-    Mulberry::PathHelper.set_app_dir(@source_dir)
+    Mulberry.paths.set_app_dir(@source_dir)
     @app = Mulberry::App.new @source_dir
   end
 
   after :each do
-    FileUtils.rm_rf 'testapp'
+    FileUtils.rm_rf @source_dir
   end
 
   describe "#scaffold" do
