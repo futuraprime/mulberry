@@ -1,4 +1,5 @@
 require 'active_support/inflector'
+require 'pathname'
 
 module Mulberry
   class CodeCreator
@@ -97,7 +98,7 @@ module Mulberry
       FileUtils.mkdir_p themes_dir unless File.exists? themes_dir
 
       File.open(File.join(themes_dir, theme_cssfile), 'a') do |f|
-        pathstring = Mulberry::PathHelper.relative_path("#{@code_dir}/#{@filename}/#{@filename.underscore.dasherize.downcase}", themes_dir)
+        pathstring = Pathname.new("#{@code_dir}/#{@filename}/#{@filename.underscore.dasherize.downcase}").relative_path_from(Pathname.new(themes_dir))
         f.write "@import '#{pathstring}';\n"
       end
 
