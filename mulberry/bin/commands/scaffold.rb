@@ -7,6 +7,7 @@ module Mulberry
         dir = args[0]
 
         begin
+          Mulberry.paths = Mulberry::PathHelper.new
           @dir = Mulberry.paths.get_app_dir dir
           @created_pages = false
 

@@ -63,6 +63,9 @@ module Mulberry
   def self.paths
     return @paths
   end
+  def self.paths=(paths)
+    @paths=paths
+  end
 
 
   class Env
