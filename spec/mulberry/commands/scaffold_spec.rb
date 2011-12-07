@@ -1,5 +1,4 @@
 require 'mulberry/commands/spec_helper.rb'
-require 'mulberry/bin/commands/scaffold'
 
 describe Mulberry::Command::Create do
   #include Mulberry::Command::SpecHelpers
