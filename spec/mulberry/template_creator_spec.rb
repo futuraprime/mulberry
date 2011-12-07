@@ -15,13 +15,8 @@ describe Mulberry::TemplateCreator do
     FileUtils.rm_rf @source_dir
   end
 
-<<<<<<< HEAD
   it "should create a template with the requested name" do
     Mulberry::TemplateCreator.new('template', 'foo')
-=======
-  it "should create a template file with the requested name" do
-    Mulberry::TemplateCreator.new('template', @tmpdir, 'foo')
->>>>>>> master
 
     template_dir = File.join @source_dir, @template_dir
 
