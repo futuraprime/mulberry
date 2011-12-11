@@ -61,6 +61,7 @@ dojo.require('dojo.hash');
           this._handleHash(hash);
         });
       }
+
     },
 
     /**
@@ -243,8 +244,11 @@ dojo.require('dojo.hash');
         callback : fn,
         paramNames : paramNames
       };
-
-      this._routes.push(r);
+      
+      // user routes are added before core routes; later routes are
+      // preferred, so if we want user routes to override the toura
+      // routes, we unshift instead of push.
+      this._routes.unshift(r);
 
       if (defaultRoute) {
         this.defaultRoute = r;
