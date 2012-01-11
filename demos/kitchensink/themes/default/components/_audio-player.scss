@@ -17,6 +17,29 @@
   &.hidden {
     display: none;
   }
+  
+  background-color: #999;
+  
+  .ui {
+    .playtoggle {
+      height: 80px; width: 80px;
+      display: inline-block;
+      background-image: url('resources/icons/playpause/play_up.png');
+      
+      &:active {
+        background-image: url('resources/icons/playpause/play_down.png');
+      }
+      
+      &.pause {
+        background-image: url('resources/icons/playpause/pause_up.png');
+        
+        &:active {
+          background-image: url('resources/icons/playpause/pause_down.png');
+        }
+      }
+    }
+    
+  }
 
   form {
     width: 60px;

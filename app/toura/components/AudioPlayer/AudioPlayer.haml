@@ -1,9 +1,10 @@
 .component.audio-player
-  .ui
-    %span.playtoggle
-    %span.gutter
-      %span.handle
-    %span.remaining
+  :if useHtml5Player
+    .ui
+      %a.playtoggle
+      %span.gutter
+        %span.handle
+      %span.remaining
   :if !useHtml5Player
     %form
       %input{ type : 'button', class : 'play', dojoAttachPoint : 'controller' }
