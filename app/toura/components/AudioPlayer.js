@@ -45,7 +45,7 @@ dojo.declare('toura.components.AudioPlayer', toura.components._MediaPlayer, {
     this.ui     = {
       main : dojo.query('.ui', this.domNode)[0],       // nodeList[0] is the (first) raw dom node
       toggle : dojo.query('.playtoggle', this.ui.main)[0],
-      handle : dojo.query('.handle', this.ui.main)[0],
+      progress : dojo.query('.progress', this.ui.main)[0],
       remaining : dojo.query('.remaining', this.ui.main)[0],
     }
     
@@ -63,7 +63,7 @@ dojo.declare('toura.components.AudioPlayer', toura.components._MediaPlayer, {
       position    = (this.player.currentTime / this.player.duration) * 100;
     
     this.ui.remaining.innerHTML = this._formatTime(this.player.currentTime) + ' / ' + this._formatTime(this.player.duration);
-    dojo.style(this.ui.handle, { 'left' : position + '%' });
+    dojo.style(this.ui.progress, { 'width' : position + '%' });
   },
 
   _handleControllerClick : function() {
