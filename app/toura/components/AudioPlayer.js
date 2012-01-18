@@ -2,6 +2,7 @@ dojo.provide('toura.components.AudioPlayer');
 
 dojo.require('toura.app.PhoneGap');
 dojo.require('toura.components._MediaPlayer');
+dojo.require('dijit.form.Slider');
 
 dojo.declare('toura.components.AudioPlayer', toura.components._MediaPlayer, {
   templateString : dojo.cache('toura.components', 'AudioPlayer/AudioPlayer.haml'),
@@ -45,7 +46,7 @@ dojo.declare('toura.components.AudioPlayer', toura.components._MediaPlayer, {
     this.ui     = {
       main : dojo.query('.ui', this.domNode)[0],       // nodeList[0] is the (first) raw dom node
       toggle : dojo.query('.playtoggle', this.ui.main)[0],
-      handle : dojo.query('.handle', this.ui.main)[0],
+      handle : dojo.query('.control', this.ui.main)[0],
       remaining : dojo.query('.remaining', this.ui.main)[0],
     }
     
@@ -56,6 +57,7 @@ dojo.declare('toura.components.AudioPlayer', toura.components._MediaPlayer, {
     
     this.connect(this.player, 'timeupdate', this._updateRemainingTime);
     this.connect(this.ui.toggle, 'onclick', this._handleControllerClick);
+    this.connect(this.ui.handle, 'onchange', this._scrubToPoint);
   },
   
   _updateRemainingTime : function() {
@@ -63,7 +65,15 @@ dojo.declare('toura.components.AudioPlayer', toura.components._MediaPlayer, {
       position    = (this.player.currentTime / this.player.duration) * 100;
     
     this.ui.remaining.innerHTML = this._formatTime(this.player.currentTime) + ' / ' + this._formatTime(this.player.duration);
-    dojo.style(this.ui.handle, { 'left' : position + '%' });
+    dojo.attr(this.ui.handle, { 'value' : position });
+  },
+  
+  _scrubToPoint : function() {
+    var value = parseInt(dojo.attr(this.ui.handle, 'value')),
+        // this.player.duration returns in seconds
+        target = this.player.duration * (value / 100);
+    
+    this._seek(target);
   },
 
   _handleControllerClick : function() {

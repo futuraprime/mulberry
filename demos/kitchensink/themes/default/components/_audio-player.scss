@@ -24,32 +24,15 @@
     @include flex-column-container;
     .playtoggle {
       display: block;
-      height: 80px; width: 80px;
+      height: 80px; width: 80px; margin-left: 10px;
       -webkit-box-flex: 0;
     }
     
     .rail {
       -webkit-box-flex: 1;
-      position: relative;
       
-      .gutter {
-        margin: 4px 10px 4px 0;
-        padding: 0 5px;
-        height: 8px;
-        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#cccccc), color-stop(45%,#e5e5e5), color-stop(100%,#cccccc));
-        background: -webkit-linear-gradient(top, #cccccc 0%,#e5e5e5 45%,#cccccc 100%);
-        border-radius: 4px;
-
-      }
-      
-      .handle {
-        height: 14px;
-        width: 14px;
-        border-radius: 10px;
-        background-color: #ccc;
-        border: 1px solid #aaa;
-        position: absolute;
-        top: 0;
+      .control {
+        width: 60%;
       }
     }
     
