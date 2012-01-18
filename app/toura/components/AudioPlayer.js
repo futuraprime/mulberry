@@ -49,6 +49,11 @@ dojo.declare('toura.components.AudioPlayer', toura.components._MediaPlayer, {
       remaining : dojo.query('.remaining', this.ui.main)[0],
     }
     
+    // the player needs to exist on the page, but shouldn't be visible to the user
+    if (this.useHtml5Player) {
+      dojo.style(this.player, { 'display': 'none' });
+    }
+    
     this.connect(this.player, 'timeupdate', this._updateRemainingTime);
     this.connect(this.ui.toggle, 'onclick', this._handleControllerClick);
   },
