@@ -5,7 +5,7 @@ dojo.require('toura.components._MediaPlayer');
 
 dojo.declare('toura.components.AudioPlayer', toura.components._MediaPlayer, {
   templateString : dojo.cache('toura.components', 'AudioPlayer/AudioPlayer.haml'),
-
+  
   playerType : 'audio',
   isPlaying : false,
   playerSettings : {
@@ -13,6 +13,7 @@ dojo.declare('toura.components.AudioPlayer', toura.components._MediaPlayer, {
     controls : true,
     autobuffer : true
   },
+  ui: {},
 
   prepareData : function() {
     this.medias = this.node.audios || [];
@@ -36,26 +37,31 @@ dojo.declare('toura.components.AudioPlayer', toura.components._MediaPlayer, {
   
   _setupPlayer : function() {
     this.inherited(arguments);
+    this._setupInterface();
+  },
+  
+  _setupInterface : function () {
     // TODO: make less jQueryish
-    var ui      = dojo.query('.ui', this.domNode)[0],       // nodeList[0] is the (first) raw dom node
-      toggle    = dojo.query('.playtoggle', ui)[0],
-      handle    = dojo.query('.handle', ui)[0],
-      remaining = dojo.query('.remaining', ui)[0],
-      
-      _updateRemainingTime = dojo.hitch(this, function() {
-        var remains   = parseInt(this.player.duration - this.player.currentTime, 10),
-          position    = (this.player.currentTime / this.player.duration) * 100;
-        
-        remaining.innerHTML = this._formatTime(this.player.currentTime) + ' / ' + this._formatTime(this.player.duration);
-        dojo.style(handle, { 'left' : position + '%' });
-      });
+    this.ui     = {
+      main : dojo.query('.ui', this.domNode)[0],       // nodeList[0] is the (first) raw dom node
+      toggle : dojo.query('.playtoggle', this.ui.main)[0],
+      handle : dojo.query('.handle', this.ui.main)[0],
+      remaining : dojo.query('.remaining', this.ui.main)[0],
+    }
     
-    dojo.connect(this.player, 'timeupdate', _updateRemainingTime);
+    this.connect(this.player, 'timeupdate', this._updateRemainingTime);
+    this.connect(this.ui.toggle, 'onclick', this._handleControllerClick);
+  },
+  
+  _updateRemainingTime : function() {
+    var remains   = parseInt(this.player.duration - this.player.currentTime, 10),
+      position    = (this.player.currentTime / this.player.duration) * 100;
+    
+    this.ui.remaining.innerHTML = this._formatTime(this.player.currentTime) + ' / ' + this._formatTime(this.player.duration);
+    dojo.style(this.ui.handle, { 'left' : position + '%' });
   },
 
   _handleControllerClick : function() {
-    if (this.useHtml5Player) { return; }
-
     if (this.isPlaying) {
       this._pause();
       this.isPlaying = false;
