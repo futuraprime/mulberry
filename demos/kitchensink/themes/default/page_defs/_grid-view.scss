@@ -19,11 +19,9 @@
 
   .component.body-text {
     padding: 9px 9px 0 9px;
-  }
-  
-  .tablet & {
-    .body-text {
-      padding: 20px 20px 0;
+
+    .tablet & {
+      padding: 10px 20px 0;
     }
   }
 }
