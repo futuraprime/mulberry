@@ -53,15 +53,6 @@ dojo.declare('toura.components._MediaPlayer', toura._Component, {
       this.player.pause();
     }
   },
-  
-  _seek : function(time /* in seconds */) {
-    if (this.useHtml5Player && this.player) {
-      this.player.currentTime = time;
-    } else {
-      // Phonegap needs milliseconds
-      this.player.seekTo(time * 1000);
-    }
-  },
 
   _setMediaIdAttr : function(mediaId) {
     var media = this.media = this.mediasCache[mediaId];
