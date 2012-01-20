@@ -32,17 +32,16 @@ dojo.declare('toura.components.AudioPlayer', toura.components._MediaPlayer, {
 
     if (this.isPlaying) {
       this._pause();
-      this.isPlaying = false;
-      this.removeClass('playing');
     } else {
       this._play();
-      this.isPlaying = true;
-      this.addClass('playing');
     }
   },
 
   _play : function(media) {
     this.inherited(arguments);
+
+    this.isPlaying = true;
+    this.addClass('playing');
 
     if (this.useHtml5Player) { return; }
 
@@ -53,6 +52,9 @@ dojo.declare('toura.components.AudioPlayer', toura.components._MediaPlayer, {
 
   _pause : function() {
     this.inherited(arguments);
+
+    this.isPlaying = false;
+    this.removeClass('playing');
 
     if (!this.useHtml5Player) {
       toura.app.PhoneGap.audio.stop();
