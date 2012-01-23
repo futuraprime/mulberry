@@ -16,3 +16,21 @@ body {
 
 @import 'components/base';
 @import 'page_defs/base';
+
+// CSS-position-fix FOR CUSTOM CSS SECTION
+
+.page.images-and-text-phone {
+  .region.caption-and-text {
+    .inner {
+      @include flex-row-container;
+      
+      .component {
+        -webkit-box-ordinal-group: 2;
+        
+        &.image-caption {
+          -webkit-box-ordinal-group: 1;
+        }
+      }
+    }
+  }
+}
