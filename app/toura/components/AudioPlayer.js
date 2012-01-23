@@ -48,6 +48,8 @@ dojo.declare('toura.components.AudioPlayer', toura.components._MediaPlayer, {
     var pg = toura.app.PhoneGap;
     pg.audio.destroy();
     pg.audio.play(this.media.url);
+    
+    toura.log("log!", this.duration(), this.getCurrentTime());
   },
 
   _pause : function() {
