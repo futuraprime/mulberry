@@ -32,10 +32,17 @@ dojo.declare('toura.components.VideoPlayer', toura.components._MediaPlayer, {
     this.inherited(arguments);
     poster = this.media.poster || '';
 
-    if (this.useHtml5Player && poster) {
+    if (this.useHtml5Player && this.media && this.media.poster) {
       this.playerSettings = dojo.mixin(this.playerSettings, {
         poster : poster
       });
+    }
+    
+    // to ensure graceful failure
+    if (!this.media) {
+      this.media = {
+        'poster': ''
+      }
     }
   },
 
@@ -45,7 +52,7 @@ dojo.declare('toura.components.VideoPlayer', toura.components._MediaPlayer, {
       this.destroy();
     }
 
-    if (this.media.poster) {
+    if (this.media && this.media.poster) {
       this.videoPlaceholder.loadImage();
     }
   },
