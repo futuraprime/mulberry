@@ -28,17 +28,24 @@ dojo.declare('toura.components.VideoPlayer', toura.components._MediaPlayer, {
     this.medias = this.node.videos || [];
     this.inherited(arguments);
 
-    if (this.useHtml5Player && this.media.poster) {
+    if (this.useHtml5Player && this.media && this.media.poster) {
       this.playerSettings = dojo.mixin(this.playerSettings, {
         poster : this.media.poster
       });
+    }
+    
+    // to ensure graceful failure
+    if (!this.media) {
+      this.media = {
+        'poster': ''
+      }
     }
   },
 
   startup : function() {
     this.inherited(arguments);
 
-    if (this.media.poster) {
+    if (this.media && this.media.poster) {
       this.videoPlaceholder.loadImage();
     }
   },
