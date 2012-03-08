@@ -2,6 +2,7 @@ feed-item:
   type: detail
   capabilities:
   - PageNav_FeedTitle
+  - MediaFeed_Video
   screens:
   - name: index
     backgroundImage: true
@@ -10,5 +11,17 @@ feed-item:
       components:
       - PageNav
     - scrollable: true
+      components:
+      - FeedItemDetail
+  - name: video
+    backgroundImage: false
+    regions:
+    - className: page-nav
+      components:
+      - PageNav
+    - className: player-container
+      components:
+      - VideoPlayer
+    - className: detail-view
       components:
       - FeedItemDetail
