@@ -9,8 +9,13 @@ dojo.declare('toura.capabilities.MediaFeed_Video', mulberry._Capability, {
   },
 
   init : function() {
-    this.videoPlayer._play({
-      url: videoUrl
-    });
+    if (this.videoUrl) {
+      this.page.showScreen('video');
+      this.videoPlayer._play({
+        url: videoUrl
+      });
+    } else {
+      this.page.showScreen('index');
+    }
   }
 });
