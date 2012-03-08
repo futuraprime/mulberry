@@ -28,6 +28,8 @@ dojo.declare('toura.components.FeedItemDetail', mulberry._Component, {
     this.item = feedItem;
 
     dojo.empty(this.content);
+    
+    
 
     dojo.place(this.itemTemplate(
       dojo.delegate(this.item, {
