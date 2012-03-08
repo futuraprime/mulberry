@@ -200,6 +200,8 @@ dojo.declare('toura.models.FeedItem', null, {
 
     this.image = this._getImage(item);
     this.author = this._getAuthor(item);
+    
+    this.media = this._getMedia(item);
   },
 
   _getImage : function(item) {
@@ -220,6 +222,12 @@ dojo.declare('toura.models.FeedItem', null, {
     }
 
     return '';
+  },
+  
+  _getMedia : function(item) {
+    var media = item['media:content'];
+    
+    return media; 
   }
 });
 
