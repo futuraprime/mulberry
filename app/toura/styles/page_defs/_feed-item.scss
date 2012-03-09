@@ -1,5 +1,15 @@
 .page.feed-item {
   .screen {
     @include standard-screen;
+    
+    &.video {
+      .region.player-container {
+        @include fixed-height-gallery;
+        
+        .component.video-player {
+          height: 50%; // this is a complete hack
+        }
+      }
+    }
   }
 }
