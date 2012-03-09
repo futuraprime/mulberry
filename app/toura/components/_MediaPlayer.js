@@ -69,6 +69,10 @@ dojo.declare('toura.components._MediaPlayer', mulberry._Component, {
       this.player.src = media.url;
     }
   },
+  
+  setMedia : function(media) {
+    this.media = media;
+  },
 
   _setupPlayer : function() {
     if (!this.useHtml5Player) { return; }

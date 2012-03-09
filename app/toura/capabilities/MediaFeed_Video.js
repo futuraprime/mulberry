@@ -10,7 +10,7 @@ dojo.declare('toura.capabilities.MediaFeed_Video', mulberry._Capability, {
   
   handlers: {
     'video/mp4': function() {
-      this.videoPlayer.media = { 'url': this.baseObj.media.url };
+      this.videoPlayer.setMedia({ 'url': this.baseObj.media.url });
       this.page.showScreen('video');
     }
   },
