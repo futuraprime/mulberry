@@ -19,9 +19,12 @@ feed-item:
     - className: page-nav
       components:
       - PageNav
-    - className: player-container
-      components:
-      - VideoPlayer
-    - className: detail-view
-      components:
-      - FeedItemDetail
+    - className: content-container
+      scrollable: true
+      regions:
+      - className: player-container
+        components:
+        - VideoPlayer
+      - className: detail-view
+        components:
+        - FeedItemDetail
