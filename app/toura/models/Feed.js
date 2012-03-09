@@ -225,9 +225,13 @@ dojo.declare('toura.models.FeedItem', null, {
   },
   
   _getMedia : function(item) {
-    var media = item['media:content'];
+    var media = item.content;
     
-    return media; 
+    if (media && media.url && media.type) {
+      return media;
+    }
+    
+    return '';
   }
 });
 

@@ -9,11 +9,15 @@ dojo.declare('toura.capabilities.MediaFeed_Video', mulberry._Capability, {
   },
 
   init : function() {
-    if (this.videoUrl) {
-      this.page.showScreen('video');
-      this.videoPlayer._play({
-        url: videoUrl
-      });
+    if (this.baseObj.media) {
+      
+      switch(this.baseObj.media.type) {
+        case "video/mp4":
+          this.page.showScreen('video');
+          this.videoPlayer.media = { url: this.baseObj.media.url }
+        break;
+      }
+      
     } else {
       this.page.showScreen('index');
     }

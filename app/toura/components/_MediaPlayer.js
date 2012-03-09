@@ -38,6 +38,7 @@ dojo.declare('toura.components._MediaPlayer', mulberry._Component, {
   play : function(mediaId) {
     this.set('mediaId', mediaId);
     this._play(this.media);
+    
   },
 
   _play : function(media) {
