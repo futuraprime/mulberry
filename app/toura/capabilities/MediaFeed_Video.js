@@ -7,17 +7,19 @@ dojo.declare('toura.capabilities.MediaFeed_Video', mulberry._Capability, {
     feedItemDetail : 'FeedItemDetail',
     videoPlayer : 'VideoPlayer'
   },
+  
+  handlers: {
+    'video/mp4': function() {
+      this.videoPlayer.media = { 'url': this.baseObj.media.url };
+      this.page.showScreen('video');
+    }
+  },
 
   init : function() {
-    if (this.baseObj.media) {
-      
-      switch(this.baseObj.media.type) {
-        case "video/mp4":
-          this.page.showScreen('video');
-          this.videoPlayer.media = { url: this.baseObj.media.url }
-        break;
-      }
-      
+    var media = this.baseObj.media;
+    
+    if (media && this.handlers[media.type]) {
+      dojo.hitch(this, this.handlers[media.type])();
     } else {
       this.page.showScreen('index');
     }
