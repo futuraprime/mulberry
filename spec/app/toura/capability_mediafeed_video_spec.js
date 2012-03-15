@@ -4,13 +4,42 @@ describe("feed item detail component", function() {
   beforeEach(function() {
     // TODO: require page stuff...
     dojo.require('mulberry.app.PageFactory');
-    dojo.require('')
+    dojo.require('mulberry._PageDef');
+    dojo.require('toura.components.VideoPlayer');
+    dojo.require('toura.components.FeedItemDetail');
+    dojo.require('toura.capabilities.MediaFeed_Video');
     
     f = f || new mulberry.app.PageFactory({ type : 'fake', os : 'fake' });
     
-    mulberry.pageDefs = {
-      "feed-item" : "feed-item"
-    }
+    mulberry.pageDef("feed-item", {
+      type : 'detail',
+      capabilities : [
+        'MediaFeed_Video'
+      ],
+      screens : [
+        {
+          'name' : 'index',
+          'regions' : [
+            {
+              'components' : [
+                "FeedItemDetail"
+              ]
+            }
+          ]
+        },
+        {
+          'name' : 'video',
+          'regions' : [
+            {
+              'components' : [
+                "VideoPlayer",
+                "FeedItemDetail"
+              ]
+            }
+          ]
+        }
+      ]
+    });
 
     t = dojo.byId('test');
 
@@ -51,6 +80,7 @@ describe("feed item detail component", function() {
       // TODO: set up an actual whole page somehow...?
       node = dojo.clone(config.node);
       node.pageDef = "feed-item";
+      debugger;
       return new f.createPage(node).placeAt(t);
     };
     
@@ -70,12 +100,5 @@ describe("feed item detail component", function() {
     expect(dojo.query('.screen.video').hasClass('hidden')).toBeFalsy();
     expect(dojo.query('.screen.index').hasClass('hidden')).toBeTruthy();
   });
-  
-  it("should display the video for the item", function() {
-    c = C({ node: videoFeedItem });
     
-    // TODO: write this test
-    expect(c.querySelector('.component.video-player')).toBeTruthy();
-  });
-  
 });
