@@ -2,13 +2,12 @@ describe("feed item detail component", function() {
   var c, C, f, t, feed, feedItem, videoFeedItem, videoFeed;
 
   beforeEach(function() {
-    // TODO: require page stuff...
     dojo.require('mulberry.app.PageFactory');
     dojo.require('mulberry._PageDef');
     dojo.require('toura.components.VideoPlayer');
     dojo.require('toura.components.FeedItemDetail');
     dojo.require('toura.capabilities.MediaFeed_Video');
-    
+        
     f = f || new mulberry.app.PageFactory({ type : 'fake', os : 'fake' });
     
     mulberry.pageDef("feed-item", {
@@ -31,6 +30,7 @@ describe("feed item detail component", function() {
           'name' : 'video',
           'regions' : [
             {
+              'scrollable' : true,
               'components' : [
                 "VideoPlayer",
                 "FeedItemDetail"
@@ -64,7 +64,7 @@ describe("feed item detail component", function() {
     };
     
     videoFeedItem = dojo.clone(feedItem);
-    videoFeedItem.content = {
+    videoFeedItem.media = {
       type : 'video/mp4',
       url : 'http://av.vimeo.com/01780/039/24113681.web?token=1331829715_b4a96dbd1013cbcb9d316abbce7fbc0e'
     };
@@ -77,11 +77,8 @@ describe("feed item detail component", function() {
 
     C = function(config) {
       
-      // TODO: set up an actual whole page somehow...?
-      node = dojo.clone(config.node);
-      node.pageDef = "feed-item";
-      debugger;
-      return new f.createPage(node).placeAt(t);
+      node = pageDef = "feed-item";
+      return f.createPage(node).placeAt(t);
     };
     
     if (c) { c.destroy(); }
@@ -90,15 +87,15 @@ describe("feed item detail component", function() {
   it("should use the standard screen for a standard feed", function() {
     c = C({ node: feedItem });
     
-    expect(dojo.query('.screen.index').hasClass('hidden')).toBeFalsy();
-    expect(dojo.query('.screen.video').hasClass('hidden')).toBeTruthy();
+    expect(dojo.hasClass(t.querySelector('.screen.index'), 'hidden')).toBeFalsy();
+    expect(dojo.hasClass(t.querySelector('.screen.video'), 'hidden')).toBeTruthy();
   });
   
   it("should use the video screen if there is a video attached", function() {
     c = C({ node: videoFeedItem });
     
-    expect(dojo.query('.screen.video').hasClass('hidden')).toBeFalsy();
-    expect(dojo.query('.screen.index').hasClass('hidden')).toBeTruthy();
+    expect(dojo.hasClass(t.querySelector('.screen.video'), 'hidden')).toBeFalsy();
+    expect(dojo.hasClass(t.querySelector('.screen.index'), 'hidden')).toBeTruthy();
   });
     
 });

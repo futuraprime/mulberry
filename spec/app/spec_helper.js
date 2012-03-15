@@ -45,6 +45,9 @@ beforeEach(function() {
   dojo.require('mulberry.app.Config');
   dojo.require('dojo.cache');
   dojo.require('mulberry.app.Has');
+  dojo.require('mulberry.containers.Region');
+
+  mulberry.registerComponentNamespace(toura.components);
 
   mulberry = mulberry || {};
   mulberry.app = mulberry.app || {};
@@ -55,9 +58,10 @@ beforeEach(function() {
   };
 
   mulberry.app.Config.set('app', toura.data.local.app);
-
+  
   mulberry.app.Has = dojo.isFunction(mulberry.app.Has) ? mulberry.app.Has() : mulberry.app.Has;
   dataAPI = toura.Data = dataAPI || new toura.Data(toura.data.local.items);
+
 
   nodeForController = function(c) {
     var node,
