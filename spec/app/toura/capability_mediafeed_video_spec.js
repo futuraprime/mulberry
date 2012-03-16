@@ -10,6 +10,10 @@ describe("feed item detail component", function() {
         
     f = f || new mulberry.app.PageFactory({ type : 'fake', os : 'fake' });
     
+    // this line should be included in SpecHelper, but it doesn't work there
+    // so it's here instead for now
+    mulberry.registerComponentNamespace(toura.components);
+    
     mulberry.pageDef("feed-item", {
       type : 'detail',
       capabilities : [
@@ -77,7 +81,8 @@ describe("feed item detail component", function() {
 
     C = function(config) {
       
-      node = pageDef = "feed-item";
+      node = config.node;
+      node.pageDef = "feed-item";
       return f.createPage(node).placeAt(t);
     };
     

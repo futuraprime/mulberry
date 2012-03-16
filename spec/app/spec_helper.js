@@ -47,7 +47,9 @@ beforeEach(function() {
   dojo.require('mulberry.app.Has');
   dojo.require('mulberry.containers.Region');
 
-  mulberry.registerComponentNamespace(toura.components);
+  // Doesn't work; don't know why.
+  // TODO: debug & remove from capability tests
+  //mulberry.registerComponentNamespace(toura.components);
 
   mulberry = mulberry || {};
   mulberry.app = mulberry.app || {};
