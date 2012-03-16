@@ -10,10 +10,7 @@ describe("feed item detail component", function() {
         
     f = f || new mulberry.app.PageFactory({ type : 'fake', os : 'fake' });
     
-    // this line should be included in SpecHelper, but it doesn't work there
-    // so it's here instead for now
-    mulberry.registerCapabilityNamespace(toura.capabilities);
-    mulberry.registerComponentNamespace(toura.components);
+    capabilityTestSetup();
     
     mulberry.pageDef("feed-item", {
       type : 'detail',

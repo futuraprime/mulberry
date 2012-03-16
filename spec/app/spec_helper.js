@@ -12,6 +12,7 @@ var dataAPI,
     pageControllerMocks,
     routerMock,
     allDevices,
+    capabilityTestSetup,
 
     fakeEventObj = {
       preventDefault : function() {},
@@ -47,10 +48,6 @@ beforeEach(function() {
   dojo.require('mulberry.app.Has');
   dojo.require('mulberry.containers.Region');
 
-  // Doesn't work; don't know why.
-  // TODO: debug & remove from capability tests
-  //mulberry.registerComponentNamespace(toura.components);
-
   mulberry = mulberry || {};
   mulberry.app = mulberry.app || {};
 
@@ -82,6 +79,17 @@ beforeEach(function() {
     }
 
     return node;
+  };
+  
+  capabilityTestSetup = function() {
+    dojo.require('mulberry.containers.Page');
+    dojo.require('mulberry.containers.Region');
+    
+    toura.capabilities = toura.capabilities || {};
+    toura.components = toura.components || {};
+    
+    mulberry.registerCapabilityNamespace(toura.capabilities);
+    mulberry.registerComponentNamespace(toura.components);
   };
 
   isWidgetRegistered = function(widgetName) {
