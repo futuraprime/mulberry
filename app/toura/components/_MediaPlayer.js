@@ -70,7 +70,7 @@ dojo.declare('toura.components._MediaPlayer', mulberry._Component, {
     }
   },
   
-  setMedia : function(media) {
+  _setMediaAttr : function(media) {
     this.media = media;
   },
 
