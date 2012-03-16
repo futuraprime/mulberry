@@ -34,11 +34,19 @@ describe("video player component", function() {
     expect(t.querySelector(getRootSelector(c))).toBeTruthy();
   });
   
-  it("should play media it's given", function() {
+  it("should change its media when prompted", function() {
     var c = new C(config).placeAt(t);
-    c.setMedia(feed_media);
+
+    c.startup();
+    c.set('media', feed_media);
+    c._setupPlayer();
     
-    expect(c.media).toEqual(feed_media);
+    waits(250);
+    
+    runs( function() {
+      expect(t.querySelector('video').getAttribute('src')).toEqual(feed_media.url);
+    });
+    
   });
 
   it("should destroy the component when it doesn't have any videos", function() {
