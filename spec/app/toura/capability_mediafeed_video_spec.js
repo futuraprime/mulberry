@@ -12,6 +12,7 @@ describe("feed item detail component", function() {
     
     // this line should be included in SpecHelper, but it doesn't work there
     // so it's here instead for now
+    mulberry.registerCapabilityNamespace(toura.capabilities);
     mulberry.registerComponentNamespace(toura.components);
     
     mulberry.pageDef("feed-item", {
@@ -68,6 +69,7 @@ describe("feed item detail component", function() {
     };
     
     videoFeedItem = dojo.clone(feedItem);
+    videoFeedItem.title = 'Video Feed Item Fixture';
     videoFeedItem.media = {
       type : 'video/mp4',
       url : 'http://av.vimeo.com/01780/039/24113681.web?token=1331829715_b4a96dbd1013cbcb9d316abbce7fbc0e'
