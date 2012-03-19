@@ -10,15 +10,6 @@ feed-item:
     - className: page-nav
       components:
       - PageNav
-    - scrollable: true
-      components:
-      - FeedItemDetail
-  - name: video
-    backgroundImage: false
-    regions:
-    - className: page-nav
-      components:
-      - PageNav
     - className: content-container
       scrollable: true
       regions:

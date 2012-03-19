@@ -11,17 +11,17 @@ dojo.declare('toura.capabilities.MediaFeed_Video', mulberry._Capability, {
   handlers: {
     'video/mp4': function() {
       this.videoPlayer.set('media', { 'url': this.baseObj.media.url });
-      this.page.showScreen('video');
+      dojo.addClass(this.domNode, 'video');
     }
   },
 
   init : function() {
     var media = this.baseObj.media;
     
-    if (media && this.handlers[media.type]) {
+    if (media && media.type && this.handlers[media.type]) {
       dojo.hitch(this, this.handlers[media.type])();
     } else {
-      this.page.showScreen('index');
+      this.videoPlayer.destroy();
     }
   }
 });
