@@ -48,7 +48,7 @@ dojo.declare('toura.components.VideoPlayer', toura.components._MediaPlayer, {
 
   startup : function() {
     this.inherited(arguments);
-    if (this.node.videos && this.node.videos.length === 0) {
+    if (!this.node.videos || this.node.videos.length === 0) {
       this.destroy();
     }
 

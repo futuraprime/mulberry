@@ -91,19 +91,11 @@ describe("feed item detail component", function() {
   it("should show the video player if there is a video attached", function() {
     c = C({ node: videoFeedItem });
     
-    // var destroyer = spyOn(c._components.VideoPlayer, 'destroy');
-    // 
-    // expect(destroyer).not.toHaveBeenCalled();
-    
     expect(t.querySelector('.component.video-player')).toBeTruthy();
   });
   
   it("should not show a video player with a standard feed", function() {
     c = C({ node: feedItem });
-
-    // var destroyer = spyOn(c._components.VideoPlayer, 'destroy').andCallThrough();
-    // 
-    // expect(destroyer).toHaveBeenCalled();
     
     expect(t.querySelector('.component.video-player')).toBeFalsy();
   });
