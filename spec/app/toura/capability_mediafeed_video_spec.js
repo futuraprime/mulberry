@@ -88,18 +88,24 @@ describe("feed item detail component", function() {
     if (c) { c.destroy(); }
   });
   
-  it("should use the standard screen for a standard feed", function() {
-    c = C({ node: feedItem });
-    
-    expect(dojo.hasClass(t.querySelector('.screen.index'), 'hidden')).toBeFalsy();
-    expect(dojo.hasClass(t.querySelector('.screen.video'), 'hidden')).toBeTruthy();
-  });
-  
-  it("should use the video screen if there is a video attached", function() {
+  it("should show the video player if there is a video attached", function() {
     c = C({ node: videoFeedItem });
     
-    expect(dojo.hasClass(t.querySelector('.screen.video'), 'hidden')).toBeFalsy();
-    expect(dojo.hasClass(t.querySelector('.screen.index'), 'hidden')).toBeTruthy();
+    // var destroyer = spyOn(c._components.VideoPlayer, 'destroy');
+    // 
+    // expect(destroyer).not.toHaveBeenCalled();
+    
+    expect(t.querySelector('.component.video-player')).toBeTruthy();
+  });
+  
+  it("should not show a video player with a standard feed", function() {
+    c = C({ node: feedItem });
+
+    // var destroyer = spyOn(c._components.VideoPlayer, 'destroy').andCallThrough();
+    // 
+    // expect(destroyer).toHaveBeenCalled();
+    
+    expect(t.querySelector('.component.video-player')).toBeFalsy();
   });
     
 });
