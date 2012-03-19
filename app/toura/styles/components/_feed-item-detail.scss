@@ -13,6 +13,10 @@
     -webkit-background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;
+    
+    .screen.video & {
+      display: none;
+    }
   }
 
   .date {
