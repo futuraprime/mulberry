@@ -85,15 +85,34 @@ dojo.declare('toura.components.VideoPlayer', toura.components._MediaPlayer, {
 
     this.set('poster', this.media.poster);
   },
+  
+  _setMediaAttr : function(media) {
+    this.inherited(arguments);
+    
+    if (this.media && this.media.poster) {
+      this.set('poster', this.media.poster);
+    }
+  },
 
   _setPosterAttr : function(poster) {
+    if (!poster) return;
+    
     if (!this.useHtml5Player) {
       this.videoPlaceholder.set('imageUrl', poster);
       return;
     }
-
+    
     if (this.player) {
       this.player.poster = poster || '';
+    }
+  },
+  
+  _setupPlayer : function() {
+    this.inherited(arguments);
+    
+    // just to be sure the poster gets set, if one exists
+    if(this.media && this.media.poster) {
+      this.set('poster', this.media.poster);
     }
   }
 });
