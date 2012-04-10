@@ -8,17 +8,26 @@ dojo.declare('toura.components.FeedItemDetail', mulberry._Component, {
   templateString : dojo.cache('toura.components', 'FeedItemDetail/FeedItemDetail.haml'),
   widgetsInTemplate: true,
   itemTemplate : Haml(dojo.cache('toura.components', 'FeedItemDetail/Item.haml')),
+  
+  _videoHandler : function(item) {
+    this.videoPlayer.show();
+    this.videoPlayer.set('media', {
+      'url' : item.media.url,
+      'poster' : item.image.url
+    });
+    // don't show an image in the main display
+    this.item.image = false;
+  },
 
-  mediaHandlers : {
-    'video/mp4' : function(item) {
-      this.videoPlayer.show();
-      this.videoPlayer.set('media', {
-        'url' : item.media.url,
-        'poster' : item.image.url
-      });
-      // don't show an image in the main display
-      this.item.image = false;
-    }
+  mediaHandlers : null,
+  
+  constructor : function() {
+    this.inherited(arguments);
+    
+    this.mediaHandlers = {
+      'video/mp4' : this._videoHandler,
+      'application/x-mpegURL' : this._videoHandler
+    };
   },
 
   prepareData : function() {

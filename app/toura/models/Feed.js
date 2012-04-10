@@ -254,8 +254,8 @@ dojo.declare('toura.models.FeedItem', null, {
   },
 
   _getMedia : function(item) {
-    var media = item.content;
-
+    var media = item.group ? item.group.content : item.content;
+    
     if (media && media.url && media.type) {
       return media;
     }
