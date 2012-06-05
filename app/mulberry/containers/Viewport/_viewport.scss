@@ -5,10 +5,13 @@
   display: -webkit-box;
   -webkit-box-orient: horizontal;
 
-  -webkit-transform: rotate3d(0,0,0);
   position: absolute;
 
   .page {
+    -webkit-transform: translate3d(0,0,0);
+  }
+  
+  &.standard {
     -webkit-transform: translate3d(0,0,0);
   }
 

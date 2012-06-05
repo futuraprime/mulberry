@@ -28,6 +28,7 @@ dojo.declare('mulberry.containers.Viewport', mulberry._View, {
     if (n.children.length) {
       var startClass = next ? 'start-forward' : 'start-back';
       mulberry.animating = true;
+      this.addClass('standard');
       this.addClass(startClass);
       newPage.placeAt(n, next ? 'last' : 'first');
       
@@ -62,8 +63,12 @@ dojo.declare('mulberry.containers.Viewport', mulberry._View, {
         if (widget) { widget.destroy(); }
       }
     }, this);
-
-    this.removeClass(['slide-left', 'slide-right', 'pre-slide', 'start-forward', 'start-back']);
+    
+    this.removeClass(['slide-left', 'slide-right', 'pre-slide', 'start-forward', 'start-back', 'standard']);
+    
+    setTimeout(dojo.hitch(this, function() {
+      this.addClass('standard');
+    }), 200);
   },
 
   _onAnimationEnd : function() {
