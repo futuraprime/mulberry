@@ -9,7 +9,7 @@ dojo.declare('mulberry.containers.Viewport', mulberry._View, {
   direction : 'next',
 
   postCreate : function() {
-    this.connect(this.domNode, 'webkitAnimationEnd', '_onAnimationEnd');
+    this.connect(this.domNode, 'webkitTransitionEnd', '_onAnimationEnd');
   },
 
   _setNavDirectionAttr : function(dir) {
@@ -26,21 +26,28 @@ dojo.declare('mulberry.containers.Viewport', mulberry._View, {
     this.currentPage = newPage;
 
     if (n.children.length) {
+      var startClass = next ? 'start-forward' : 'start-back';
       mulberry.animating = true;
-      this.addClass('pre-slide');
+      this.addClass(startClass);
       newPage.placeAt(n, next ? 'last' : 'first');
-      this.addClass(next ? 'slide-left' : 'slide-right');
+      
+      // CSS needs a tiny bit of time to catch up to the new transform
+      // before we attach the transition animation
+      setTimeout(dojo.hitch(this, function() {
+        this.addClass('pre-slide');
+        this.addClass(next ? 'slide-left' : 'slide-right');
+      }), 25);
     } else {
       newPage.placeAt(n, 'last');
       this._onAnimationEnd();
     }
 
-    setTimeout(function() {
+    setTimeout(dojo.hitch(this, function() {
       // sometimes webkitAnimationEnd doesn't fire :/
-      if (this.animating) {
+      if (mulberry.animating) {
         this._onAnimationEnd();
       }
-    }, 600);
+    }), 450);
   },
 
   _cleanupOldPage : function() {
@@ -56,7 +63,7 @@ dojo.declare('mulberry.containers.Viewport', mulberry._View, {
       }
     }, this);
 
-    this.removeClass(['slide-left', 'slide-right', 'pre-slide']);
+    this.removeClass(['slide-left', 'slide-right', 'pre-slide', 'start-forward', 'start-back']);
   },
 
   _onAnimationEnd : function() {

@@ -8,48 +8,33 @@
   -webkit-transform: rotate3d(0,0,0);
   position: absolute;
 
-  -webkit-animation-duration: 350ms;
-  -webkit-animation-fill-mode: forwards;
-  -webkit-animation-timing-function: ease-out;
-  
-  .android & {
-    -webkit-animation-duration: 500ms;   // gets rid of the stutterbug on Android
-  }
-
   .page {
     -webkit-transform: translate3d(0,0,0);
   }
 
   &.pre-slide {
+    -webkit-transition-property: -webkit-transform;
+    -webkit-transition-duration: 350ms;
+    -webkit-transition-function: ease-out;
+  }
+  
+  &.start-back {
+    -webkit-transform: translate3d(-50%, 0, 0);
+    width: 200%;
+  }
+  
+  &.start-forward {
+    -webkit-transform: translate3d(0,0,0);
     width: 200%;
   }
 
   &.slide-left {
-    -webkit-animation-name: slide-left;
+    -webkit-transform: translate3d(-50%, 0, 0);
   }
 
   &.slide-right {
-    -webkit-animation-name: slide-right;
-  }
-}
-
-@-webkit-keyframes slide-left {
-  0% {
-    -webkit-transform: translate3d(0,0,0);
-  }
-  100% {
-    -webkit-transform: translate3d(-50%, 0, 0);
-  }
-}
-
-@-webkit-keyframes slide-right {
-  0% {
-    -webkit-transform: translate3d(-50%, 0, 0);
-  }
-  100% {
     -webkit-transform: translate3d(0,0,0);
   }
 }
-
 
 
