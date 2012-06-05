@@ -48,7 +48,7 @@ dojo.declare('mulberry.containers.Viewport', mulberry._View, {
       if (mulberry.animating) {
         this._onAnimationEnd();
       }
-    }), 450);
+    }), 650);
   },
 
   _cleanupOldPage : function() {
