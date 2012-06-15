@@ -17,6 +17,7 @@ dojo.require('toura.components.Favorites');
 dojo.require('toura.components.FeedItemDetail');
 dojo.require('toura.components.FeedItemList');
 dojo.require('toura.components.GoogleMap');
+dojo.require('toura.components.HideablePlaylist');
 dojo.require('toura.components.Hotspots');
 dojo.require('toura.components.ImageGallery');
 dojo.require('toura.components.LocationList');
