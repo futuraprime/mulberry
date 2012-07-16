@@ -47,6 +47,18 @@ dojo.declare('toura.components.AssetList', mulberry._Component, {
     }, this);
   },
 
+  startup : function() {
+    this.inherited(arguments);
+
+    // note: this can't go in setupConnections because the component has not
+    // yet been assigned a region then
+    if (this.region._addedItems.length === 1) {
+      this.scrollKeeper = dojo.subscribe('/content/update', dojo.hitch(this, function(event) {
+        this.region._scroller.scroller.scrollToElement('.current', '0ms');
+      }));
+    }
+  },
+
   _onSelect : function(assetId) {
     this.set('currentAsset', assetId);
     this.onSelect(assetId);
@@ -65,5 +77,11 @@ dojo.declare('toura.components.AssetList', mulberry._Component, {
     item = this.query('#asset-' + assetId)[0];
     dojo.addClass(item, 'current');
     this.currentAsset = assetId;
+  },
+
+  teardown : function() {
+    dojo.unsubscribe(this.scrollKeeper);
+
+    this.inherited(arguments);
   }
 });
