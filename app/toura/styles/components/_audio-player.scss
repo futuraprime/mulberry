@@ -16,6 +16,10 @@
 
   .playpause {
     @include player-button(play, light);
+
+    &:only-child {
+      margin: 0 auto;
+    }
   }
 
   .rev30 {
