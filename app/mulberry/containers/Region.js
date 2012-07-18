@@ -99,6 +99,15 @@ dojo.declare('mulberry.containers.Region', mulberry.containers._LayoutBox, {
     }
   },
 
+  numComponents : function() {
+    return this._addedItems.length;
+  },
+
+  showElement : function(selector, ms) {
+    ms = ms || '0ms';
+    this._scroller.scroller.scrollToElement(selector, ms);
+  },
+
   refreshScroller : function() {
     if (this._scroller) {
       this._scroller.refreshScroller();

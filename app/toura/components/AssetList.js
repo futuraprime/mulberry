@@ -52,9 +52,9 @@ dojo.declare('toura.components.AssetList', mulberry._Component, {
 
     // note: this can't go in setupConnections because the component has not
     // yet been assigned a region then
-    if (this.region._addedItems.length === 1) {
+    if (this.region.numComponents() === 1) {
       this.scrollKeeper = dojo.subscribe('/content/update', dojo.hitch(this, function(event) {
-        this.region._scroller.scroller.scrollToElement('.current', '0ms');
+        this.region.showElement('.current', '0ms');
       }));
     }
   },
