@@ -12,9 +12,9 @@ dojo.declare('mulberry.ui.Scrollable', dijit._Widget, {
     this.subscribe('/fontsize', 'refreshScroller');
     this.subscribe('/content/update', function() {
       this.refreshScroller();
-      if (this.scroller) {
-        this.scroller.scrollTo(0, 0);
-      }
+      // if (this.scroller) {
+      //   this.scroller.scrollTo(0, 0);
+      // }
     });
 
     dojo.addClass(this.domNode, 'scrollable');
@@ -49,7 +49,15 @@ dojo.declare('mulberry.ui.Scrollable', dijit._Widget, {
 
   refreshScroller : function() {
     if (this.scroller) {
+      var snapshot = {
+        y : this.scroller.y,
+        maxScrollY : this.scroller.maxScrollY,
+        scrollerH : this.scroller.scrollerH,
+        wrapperH : this.scroller.wrapperH
+      };
       this.scroller.refresh();
+      console.log(this.scroller);
+      this.scroller.scrollTo(snapshot.x, snapshot.y);
     }
   },
 
