@@ -31,6 +31,7 @@ dojo.declare('mulberry.ui.Scrollable', dijit._Widget, {
       onScrollEnd : dojo.hitch(this, 'onScrollEnd')
     });
 
+    this._resetSnapshot();
     this.scroller.refresh();
   },
 
@@ -49,16 +50,43 @@ dojo.declare('mulberry.ui.Scrollable', dijit._Widget, {
 
   refreshScroller : function() {
     if (this.scroller) {
-      var snapshot = {
+      this.scroller.refresh();
+      console.log(this.scroller, this.snapshot);
+      this.scroller.scrollTo(0, this.snapshot.y);
+
+      clearTimeout(this._snapshotTimeout);
+      this._snapshotTimeout = setTimeout(dojo.hitch(this, function() {
+        this._resetSnapshot();
+      }), 1000);
+    }
+  },
+
+  _getReadingTarget : function(startPos, element) {
+    var pos = startPos || dojo.position(this.scroller.wrapper),
+        offsetX = 25, offsetY = 5;
+        topEle = element || (document.elementFromPoint(pos.x + offsetX, pos.y + offsetY)),
+        topElePos = dojo.position(topEle);
+    console.log(topEle, topElePos, topElePos.y >= pos.y);
+    if (topElePos.y >= pos.y) {
+      return topEle;
+    }
+
+
+
+  },
+
+  _resetSnapshot : function() {
+    this.snapshot = {
         y : this.scroller.y,
         maxScrollY : this.scroller.maxScrollY,
         scrollerH : this.scroller.scrollerH,
-        wrapperH : this.scroller.wrapperH
+        wrapperH : this.scroller.wrapperH,
+        target : this._getReadingTarget()
       };
-      this.scroller.refresh();
-      console.log(this.scroller);
-      this.scroller.scrollTo(snapshot.x, snapshot.y);
-    }
+    clearTimeout(this._snapshotTimeout);
+    this._snapshotTimeout = setTimeout(dojo.hitch(this, function() {
+      this._resetSnapshot();
+    }), 1000);
   },
 
   onScrollStart : function() {
