@@ -62,6 +62,7 @@ dojo.declare('mulberry.ui.Scrollable', dijit._Widget, {
   },
 
   _getReadingTarget : function(startPos, element) {
+    if (!this.scroller) { return; }
     var pos = startPos || dojo.position(this.scroller.wrapper),
         offsetX = 25, offsetY = 5;
         topEle = element || (document.elementFromPoint(pos.x + offsetX, pos.y + offsetY)),
@@ -70,9 +71,13 @@ dojo.declare('mulberry.ui.Scrollable', dijit._Widget, {
     if (topElePos.y >= pos.y) {
       return topEle;
     }
+    var nextEle = topEle.nextSibling ? topEle.nextSibling : topEle.parentNode;
 
+    if (nextEle === this.scroller.scroller) {
+      return;
+    }
 
-
+    return this._getReadingTarget(pos, nextEle);
   },
 
   _resetSnapshot : function() {
@@ -86,7 +91,7 @@ dojo.declare('mulberry.ui.Scrollable', dijit._Widget, {
     clearTimeout(this._snapshotTimeout);
     this._snapshotTimeout = setTimeout(dojo.hitch(this, function() {
       this._resetSnapshot();
-    }), 1000);
+    }), 5000);
   },
 
   onScrollStart : function() {
