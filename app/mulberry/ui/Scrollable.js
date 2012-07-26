@@ -66,8 +66,17 @@ dojo.declare('mulberry.ui.Scrollable', dijit._Widget, {
     var pos = startPos || dojo.position(this.scroller.wrapper),
         offsetX = 25, offsetY = 5;
         topEle = element || (document.elementFromPoint(pos.x + offsetX, pos.y + offsetY)),
-        topElePos = dojo.position(topEle);
+        topElePos = dojo.position(topEle),
+        fnCache = null;
     console.log(topEle, topElePos, topElePos.y >= pos.y);
+    if (topEle.id == "splash") {
+      // TOO SOON
+      fnCache = mulberry.app.UI.hideSplash;
+      mulberry.app.UI.hideSplash = dojo.hitch(this, function() {
+        fnCache();
+        this._getReadingTarget(pos, topEle);
+      });
+    }
     if (topElePos.y >= pos.y) {
       return topEle;
     }
@@ -77,7 +86,7 @@ dojo.declare('mulberry.ui.Scrollable', dijit._Widget, {
       return;
     }
 
-    return this._getReadingTarget(pos, nextEle);
+    // return this._getReadingTarget(pos, nextEle);
   },
 
   _resetSnapshot : function() {
