@@ -74,8 +74,10 @@ dojo.declare('mulberry.ui.Scrollable', dijit._Widget, {
       fnCache = mulberry.app.UI.hideSplash;
       mulberry.app.UI.hideSplash = dojo.hitch(this, function() {
         fnCache();
+        console.log("RECURZON STRIKES AGAIN");
         this._getReadingTarget(pos, topEle);
       });
+      return;
     }
     if (topElePos.y >= pos.y) {
       return topEle;
@@ -86,7 +88,7 @@ dojo.declare('mulberry.ui.Scrollable', dijit._Widget, {
       return;
     }
 
-    // return this._getReadingTarget(pos, nextEle);
+    return this._getReadingTarget(pos, nextEle);
   },
 
   _resetSnapshot : function() {
