@@ -71,12 +71,6 @@ dojo.declare('mulberry.ui.Scrollable', dijit._Widget, {
     console.log(topEle, topElePos, topElePos.y >= pos.y);
     if (topEle.id == "splash") {
       // TOO SOON
-      fnCache = mulberry.app.UI.hideSplash;
-      mulberry.app.UI.hideSplash = dojo.hitch(this, function() {
-        fnCache();
-        console.log("RECURZON STRIKES AGAIN");
-        this._getReadingTarget(pos, topEle);
-      });
       return;
     }
     if (topElePos.y >= pos.y) {
@@ -92,6 +86,10 @@ dojo.declare('mulberry.ui.Scrollable', dijit._Widget, {
   },
 
   _resetSnapshot : function() {
+    if (!this.scroller) {
+      clearTimeout(this._snapshotTimeout);
+      return;
+    }
     this.snapshot = {
         y : this.scroller.y,
         maxScrollY : this.scroller.maxScrollY,
