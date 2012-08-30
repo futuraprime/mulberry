@@ -5,7 +5,7 @@ require 'fakeweb'
 describe Builder::Build do
   before :all do
     Mulberry::App.scaffold('testapp', true)
-    @config = { :skip_js_build => true }
+    @config = { :skip_js_build => true, :build_js => false }
 
     @page_defs = Dir.glob(File.join(Mulberry::Framework::Directories.page_defs, '*.yml')).map do |page_def|
       YAML.load_file(page_def).keys.first
@@ -27,6 +27,7 @@ describe Builder::Build do
   it "should create js files if javascript step is specified" do
     b = Builder::Build.new(@config.merge({
       :skip_js_build => false,
+      :build_js => true,
       :target_config => {
         'build_type' => 'fake',
         'build' => {

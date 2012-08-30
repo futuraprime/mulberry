@@ -75,7 +75,7 @@ module Builder
       @location = Mulberry::Directories.js_builds
       @client_dir = nil
 
-      @build_js = @build.settings[:build_js]
+      @build_js = @build.settings[:build_js] === false ? false : true
 
       get_dojo
     end
@@ -88,6 +88,7 @@ module Builder
 
       if @build.settings[:skip_js_build] || !@build_js
         @build.log "Skipping JavaScript build." if @build.settings[:skip_js_build]
+        @build.log "Using build from previous cycle." if !@build_js
         return true
       end
 
