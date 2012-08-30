@@ -344,16 +344,20 @@ module Mulberry
       success = false
       msg = nil
       b = nil
+      js_built = false
 
       SUPPORTED_DEVICES.each do |os, types|
         types.each do |type|
           if supports_type?(type) && supports_os?(os)
             b = Builder::Build.new(base_config.merge({
               :device_type => type,
-              :device_os   => os
+              :device_os   => os,
+              :build_js    => !js_built
             }))
 
             b.build
+
+            js_built = true
           end
         end
       end
