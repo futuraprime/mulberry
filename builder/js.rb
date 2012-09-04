@@ -84,6 +84,7 @@ module Builder
         return true
       end
 
+      # this comment is solely for Travis' benefit
       if JavaScript.already_built?
         @build.log "Already built JS for this cycle."
         return true
