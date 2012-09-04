@@ -84,6 +84,11 @@ module Builder
         return true
       end
 
+      if JavaScript.already_built?
+        @build.log "Already built JS for this cycle."
+        return true
+      end
+
       if @build.settings[:skip_js_build]
         @build.log "Skipping JavaScript build."
         return true
@@ -98,6 +103,8 @@ module Builder
       if @client_dir
         FileUtils.rm_rf @client_dir
       end
+
+      JavaScript.already_built = true
 
       true
     end
@@ -178,6 +185,18 @@ module Builder
       end
 
       @build.log("Dojo is installed. It's all good.", 'info')
+    end
+
+    def self.already_built=(bool)
+      @already_built = bool
+    end
+
+    def self.already_built?
+      @already_built
+    end
+
+    def self.need_to_build?
+      return !already_built?
     end
 
     def unminify_haml
