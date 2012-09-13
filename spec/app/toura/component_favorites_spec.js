@@ -9,6 +9,8 @@ describe("toura.components.Favorites", function() {
   beforeEach(function() {
     dojo.require('toura.components.Favorites');
     dojo.require('toura.user.Favorites');
+    dojo.require('mulberry.app.DeviceStorage');
+    mulberry.app.DeviceStorage.drop();
 
     if (!ds) {
       ds = mulberry.app.DeviceStorage;
@@ -18,7 +20,7 @@ describe("toura.components.Favorites", function() {
     ds.set('favorites', null);
 
     if (!favs) { favs = toura.user.Favorites = new toura.user.Favorites(); }
-    favs._empty();
+    favs.empty();
 
     node = dataAPI.getModel(id);
 
@@ -47,7 +49,7 @@ describe("toura.components.Favorites", function() {
     allDevices(function(d) {
       var f, num;
 
-      dojo.publish('/favorite/add', [ node ]);
+      favs.addFavorite(node);
       f = favs.load();
       num = f.length;
 
@@ -79,7 +81,7 @@ describe("toura.components.Favorites", function() {
           f, num, click, deleteBtn;
 
       dojo.subscribe('/favorite/remove', spy);
-      dojo.publish('/favorite/add', [ node ]);
+      favs.addFavorite(node);
 
       f = favs.load();
       num = f.length;
@@ -90,7 +92,7 @@ describe("toura.components.Favorites", function() {
       });
 
       dojo.filter(c._supportingWidgets, function(widget){
-        if(widget.isInstanceOf(toura.components.buttons.DeleteButton)){
+        if (widget.isInstanceOf(toura.components.buttons.DeleteButton)) {
           deleteBtn = widget;
         }
       });
