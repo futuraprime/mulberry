@@ -14,7 +14,12 @@ dojo.declare('toura.components.ChildNodes', mulberry._Component, {
   adjustMarkup : function() {
     if (!this.children.length) {
       this.addClass('empty');
+    } else {
+      this.removeClass('empty');
     }
+
+    console.log(this.children);
+
     this.populate(this.itemTemplate, this.children);
   },
 
@@ -24,15 +29,7 @@ dojo.declare('toura.components.ChildNodes', mulberry._Component, {
 
   _updateNodes : function() {
     this.children = this.node.children || {};
-    this._updateDisplay();
-  },
-
-  _updateDisplay : function() {
-    this.populate(this.itemTemplate, this.children);
-
-    if (this.children.length > 0) {
-      this.removeClass('empty');
-    }
+    this.adjustMarkup();
   },
 
   setupConnections : function() {

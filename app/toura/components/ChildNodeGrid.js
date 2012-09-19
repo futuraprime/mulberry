@@ -5,6 +5,8 @@ dojo.require('toura.components.ChildNodes');
 
 dojo.declare('toura.components.ChildNodeGrid', toura.components.ChildNodes, {
   templateString : dojo.cache('toura.components', 'ChildNodeGrid/ChildNodeGrid.haml'),
+  itemPhoneTemplate : Haml(dojo.cache('toura.components', 'ChildNodeGrid/ChildNodeGridPhoneItem.haml')),
+  itemTabletTemplate : Haml(dojo.cache('toura.components', 'ChildNodeGrid/ChildNodeGridTabletItem.haml')),
   widgetsInTemplate : true,
 
   prepareData : function() {
@@ -38,5 +40,11 @@ dojo.declare('toura.components.ChildNodeGrid', toura.components.ChildNodes, {
 
     dojo.place(css, document.querySelector('head'));
     toura.components.ChildNodeGrid.placedCSS = true;
+  },
+
+  adjustMarkup : function() {
+    this.itemTemplate = this.isTablet ? this.itemTabletTemplate : this.itemPhoneTemplate;
+
+    this.inherited(arguments);
   }
 });
