@@ -18,8 +18,6 @@ dojo.declare('toura.components.ChildNodes', mulberry._Component, {
       this.removeClass('empty');
     }
 
-    console.log(this.children);
-
     this.populate(this.itemTemplate, this.children);
   },
 
