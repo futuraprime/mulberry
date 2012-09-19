@@ -24,6 +24,10 @@ dojo.declare('toura.components.ChildNodes', mulberry._Component, {
 
   _updateNodes : function() {
     this.children = this.node.children || {};
+    this._updateDisplay();
+  },
+
+  _updateDisplay : function() {
     this.populate(this.itemTemplate, this.children);
 
     if (this.children.length > 0) {
