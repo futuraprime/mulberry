@@ -102,6 +102,10 @@ dojo.declare('mulberry._Component', mulberry._View, {
 
     element.innerHTML = dojo.isArray(data) ? dojo.map(data, templateFn).join('') : templateFn(data);
 
+    if (this.widgetsInTemplate) {
+      dojo.parser.parse(element);
+    }
+
     if (this.region) {
       this.region.refreshScroller();
     }
