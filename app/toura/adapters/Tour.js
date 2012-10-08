@@ -1,15 +1,17 @@
-dojo.provide('toura.adapters._Updateable');
+dojo.provide('toura.adapters.Tour');
 
 dojo.require('mulberry._Adapter');
-dojo.require('mulberry.app.DeviceStorage');
-dojo.require('dojo.io.script');
 
-/**
- * @class toura.adapters._Updateable
- *
- * A base class for toura's updateable resources.
- */
-dojo.declare('toura.adapters._Updateable', mulberry._Adapter, {
+dojo.declare('toura.adapters.Tour', mulberry._Adapter, {
+  appConfig : {},
+
+  // set to true if this is the main tour.js driving the app
+  primaryTour : false,
+
+  fields : [ 'id text', 'json text', 'source text' ],
+
+  tableName : 'items',
+
   /**
    * The location of the bundled data, if any
    * @optional
@@ -22,6 +24,24 @@ dojo.declare('toura.adapters._Updateable', mulberry._Adapter, {
    */
   remoteVersionUrl : '',
 
+
+  /**
+   * An integer indicating when the remote was last checked for a new version.
+   */
+  lastChecked : 0,
+
+
+  constructor : function(config) {
+    this.inherited(arguments);
+    this.source = config && config.source || 'main';
+
+    this.appConfig = mulberry.app.DeviceStorage.get(this.source + '-app');
+  },
+
+  /**************************/
+  /* BOOTSTRAP AND UPDATING */
+  /**************************/
+
   /**
    * @public
    *
@@ -33,10 +53,8 @@ dojo.declare('toura.adapters._Updateable', mulberry._Adapter, {
    * @returns {Promise} A promise that, if resolved, will be resolved with a
    * boolean value. If the value is true, then the data was updated during the
    * bootstrapping process.
-   *
-   * TODO: convert this to an extension of [super].getData
    */
-  bootstrap : function() {
+  getData : function() {
     var localVersion = this._getLocalVersion(),
         dfd = this.deferred = new dojo.Deferred();
 
@@ -44,30 +62,20 @@ dojo.declare('toura.adapters._Updateable', mulberry._Adapter, {
       var bundleVersion = bundleData.version,
           initializeRequired = (localVersion === null) ||
             (bundleVersion === null) ||
-            (localVersion < bundleVersion);
+            (localVersion < bundleVersion) ||
+            !this.appConfig;
 
       dojo.when(
         initializeRequired ? this._initializeData(bundleData) : true,
         dojo.hitch(this, '_updateIfNecessary')
       ).then(dojo.hitch(this, '_onUpdate'));
+    }), dojo.hitch(this, function() {
+      dojo.hitch(this, '_updateIfNecessary').then(
+        dojo.hitch(this, '_onUpdate')
+      );
     }));
 
     return dfd.promise;
-  },
-
-  _storeRemoteData : function(remoteData) {
-    if (remoteData.appVersion && this._isAppVersionCompatible(remoteData.appVersion)) {
-      this.inherited(arguments);
-    } else {
-      this.deferred.resolve(false);
-    }
-  },
-
-  _isAppVersionCompatible: function(versionString) {
-    var appVersion = mulberry.app.Config.get('appVersion'),
-        appMajorVersion = this._parseMajorVersion(appVersion);
-
-    return appMajorVersion === this._parseMajorVersion(versionString);
   },
 
   _updateIfNecessary : function() {
@@ -133,6 +141,27 @@ dojo.declare('toura.adapters._Updateable', mulberry._Adapter, {
     return dfd.promise;
   },
 
+  /**********************/
+  /* VERSION MANAGEMENT */
+  /**********************/
+
+  /**
+   * @private
+   * @returns {Number} The current local version, or -1 if there is no current
+   * local version.
+   */
+  _getLocalVersion : function() {
+    var v = this.version || mulberry.app.DeviceStorage.get(this.source + '-version');
+    return v;
+  },
+
+  /**
+   * @private
+   */
+  _setLocalVersion : function(v) {
+    mulberry.app.DeviceStorage.set(this.source + '-version', v);
+  },
+
   /**
    * @private
    * @returns {Promise} A promise that, if resolved, will be resolved with the
@@ -166,39 +195,38 @@ dojo.declare('toura.adapters._Updateable', mulberry._Adapter, {
 
   /**
    * @private
-   * @returns {Number} The current local version, or -1 if there is no current
-   * local version.
+   *
+   * Parse the major version out of a version string as a number.
    */
-  _getLocalVersion : function() {
-    var v = mulberry.app.DeviceStorage.get(this.source + '-version');
-    return v;
+  _parseMajorVersion: function(versionString) {
+    return +versionString.split('.')[0];
   },
+
+  _isAppVersionCompatible: function(versionString) {
+    var appVersion = mulberry.app.Config.get('appVersion'),
+        appMajorVersion = this._parseMajorVersion(appVersion);
+
+    return appMajorVersion === this._parseMajorVersion(versionString);
+  },
+
+
+  /*******************/
+  /* DATA MANAGEMENT */
+  /*******************/
 
   /**
    * @private
-   */
-  _setLocalVersion : function(v) {
-    mulberry.app.DeviceStorage.set(this.source + '-version', v);
-  },
-
-
-  /**
-   * @private
-   * @returns {Object} The bundled data
+   * @returns {Object} A promise which resolves with the bundled data. If
+   *                     this is not a primaryTour tour, the tour should have
+   *                     no bundled data, so the promise is rejected.
    */
   getBundleData : function() {
     var dfd = new dojo.Deferred();
-
-    if (!this.bundleDataUrl) {
-      dfd.resolve();
-      return dfd.promise;
+    if(this.primaryTour) {
+      dfd.resolve(toura.data.local);
+    } else {
+      dfd.reject();
     }
-
-    dojo.io.script.get({
-      url : this.bundleDataUrl,
-      preventCache : true
-    }).then(dfd.resolve, dfd.reject);
-
     return dfd.promise;
   },
 
@@ -229,23 +257,75 @@ dojo.declare('toura.adapters._Updateable', mulberry._Adapter, {
     return dfd.promise;
   },
 
-  /**
-   * @private
-   *
-   * Update the version flag
-   */
-  _store : function(sourceData) {
-    this._items = sourceData.items;
-    this._setLocalVersion(sourceData && sourceData.version);
+  _processData : function(data) {
+    if (data.app) {
+      this.appConfig = data.app;
+      mulberry.app.DeviceStorage.set(this.source + '-app', data.app);
+    }
+
+    if (data.items) {
+      // TODO: figure out why this.inherited fails here
+      this._items = data.items;
+    }
+
+    if (data.version) {
+      this.version = data.version;
+    }
   },
 
-  /**
-   * @private
-   *
-   * Parse the major version out of a version string as a number.
-   */
-  _parseMajorVersion: function(versionString) {
-    return +versionString.split('.')[0];
-  }
+  _storeRemoteData : function(remoteData) {
+    if (remoteData.appVersion && this._isAppVersionCompatible(remoteData.appVersion)) {
+      this.inherited(arguments);
+    } else {
+      this.deferred.resolve(false);
+    }
+  },
 
+  _store : function(newRemoteData) {
+    var dfd = new dojo.Deferred(),
+        storeOnDevice;
+
+    if (this._items) {
+      storeOnDevice = mulberry.app.DeviceStorage.set(this.source, this._items, this);
+
+      storeOnDevice.then(dojo.hitch(this, function() {
+        this._setLocalVersion(this.version);
+      }));
+
+      if (newRemoteData) {
+        // if what we're storing is new remote data, then we should
+        // wait until it's stored before we resolve the deferred
+        storeOnDevice.then(function() { dfd.resolve(true); });
+      } else {
+        // if it's not new remote data, we don't need to wait until it's
+        // stored; we can just proceed immediately.
+        dfd.resolve(true);
+      }
+    }
+
+    return dfd.promise;
+  },
+
+  _onDataReady : function() {
+    this.inherited(arguments);
+    if (this.primaryTour) {
+      mulberry.app.Config.set('app', this.appConfig);
+    }
+  },
+
+
+
+
+  insertStatement : function(tableName, item) {
+    return [
+      "INSERT INTO " + tableName + " (id, json, source) VALUES ( ?, ?, ? )",
+      [ item.id, JSON.stringify(item), this.source ]
+    ];
+  },
+
+  getRootNodes : function() {
+    if (!this.appConfig || !this.appConfig.homeNodeId) { return; }
+
+    return toura.Data.getModel(this.appConfig.homeNodeId, 'node').children;
+  }
 });

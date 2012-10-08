@@ -1,4 +1,4 @@
- dojo.provide('mulberry._Adapter');
+dojo.provide('mulberry._Adapter');
 
 /**
  * @class mulberry._Adapter
@@ -15,7 +15,7 @@ dojo.declare('mulberry._Adapter', null, {
   /**
    * The name of the table to write these items to (usually 'items')
    */
-  tableName : 'items',
+  tableName : null,
 
 
   /**
@@ -37,15 +37,9 @@ dojo.declare('mulberry._Adapter', null, {
 
 
   /**
-   * An integer indicating when the remote was last checked for a new version.
-   */
-  lastChecked : 0,
-
-
-  /**
    * The field list for the table this adapter uses
    */
-  fields : ['json text'],
+  fields : ['json text', 'source text'],
 
 
   /**
@@ -136,8 +130,8 @@ dojo.declare('mulberry._Adapter', null, {
    */
   insertStatement : function(tableName, item) {
     return [
-      "INSERT INTO " + tableName + " (json) VALUES ( ? )",
-      [ JSON.stringify(item) ]
+      "INSERT INTO " + tableName + " (json, source) VALUES ( ? )",
+      [ JSON.stringify(item), this.source ]
     ];
   },
 

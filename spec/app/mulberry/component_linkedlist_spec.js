@@ -60,7 +60,7 @@ describe("linked list component", function() {
 
       for (i = items.length - 1; i >= 0; i--) {
         c._addItem(items[i]);
-      };
+      }
 
       element = c._addItem({'foo' : 'boz'}, 1);
 
