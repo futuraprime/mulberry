@@ -60,7 +60,7 @@ dojo.declare('mulberry.components._LinkedList', mulberry._Component, {
       this.observation.cancel();
     }
 
-    this.observation = this.storeData.observe(dojo.hitch(this, function(item, removedIndex, insertedIndex, foo) {
+    this.observation = this.storeData.observe(dojo.hitch(this, function(item, removedIndex, insertedIndex) {
       if (removedIndex > -1) {
         this._dropItem(removedIndex);
       }
@@ -70,6 +70,8 @@ dojo.declare('mulberry.components._LinkedList', mulberry._Component, {
       }
 
       this._checkLength();
+
+      this.updated();
     }), true);
   },
 
@@ -81,6 +83,16 @@ dojo.declare('mulberry.components._LinkedList', mulberry._Component, {
    */
   clearItems : function() {
     dojo.empty(this.container);
+  },
+
+
+  /**
+   * @public
+   *
+   * a stub function for extension. Called whenever the observer is fired
+   */
+  updated : function() {
+    // stub intentionally blank
   },
 
 
