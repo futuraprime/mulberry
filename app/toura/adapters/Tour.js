@@ -265,7 +265,10 @@ dojo.declare('toura.adapters.Tour', mulberry._Adapter, {
 
     if (data.items) {
       // TODO: figure out why this.inherited fails here
-      this._items = data.items;
+      this._items = dojo.map(data.items, dojo.hitch(this, function(item) {
+        item.source = this.source;
+        return item;
+      }));
     }
 
     if (data.version) {
