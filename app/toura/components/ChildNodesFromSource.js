@@ -10,7 +10,7 @@ dojo.declare('toura.components.ChildNodesFromSource', toura.components.ChildNode
   postCreate : function() {
     this.inherited(arguments);
 
-    dojo.when(this.node.children.query({ 'source' : this.source }), dojo.hitch(this, function(data) {
+    dojo.when(this.node.children.query({ 'source' : this.externalContent.source }), dojo.hitch(this, function(data) {
       this.setStore(data);
     }));
   },
